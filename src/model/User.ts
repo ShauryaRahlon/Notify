@@ -8,8 +8,6 @@ export interface User extends Document {
     isVerified: boolean,
     verifyCode: string,
     verifyCodeExpires: Date,
-    EarnedPoints: number,
-    rescues?: mongoose.Types.ObjectId[]
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -21,14 +19,6 @@ const UserSchema: Schema<User> = new Schema({
     verifyCode: { type: String },
     verifyCodeExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
-    EarnedPoints: {
-        type: Number,
-        default: 0
-    },
-    rescues: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Rescues'
-    }]
 
 });
 
