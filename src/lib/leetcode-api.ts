@@ -1,7 +1,7 @@
 import type { LeetCodeContestRating, LeetCodeBadges } from "./types"
 
 // Mock API functions - replace with actual API calls
-export async function getLeetCodeContestRating(username: string): Promise<LeetCodeContestRating> {
+export async function   getLeetCodeContestRating(username: string): Promise<LeetCodeContestRating> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
