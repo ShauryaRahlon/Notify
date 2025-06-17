@@ -11,7 +11,7 @@ interface RawContest {
     contest_duration: string;
     distinct_users: number;
 }
-const getCodeChef = async (): Promise<Contest[]> => {
+const getCodechef = async (): Promise<Contest[]> => {
     try {
         const response = await fetch(`https://www.codechef.com/api/list/contests/all?sort_by=END&sorting_order=desc&offset=0&mode=all`)
         const data = await response.json();
@@ -31,4 +31,4 @@ const getCodeChef = async (): Promise<Contest[]> => {
         return [];
     }
 }
-export default getCodeChef
+export { getCodechef }

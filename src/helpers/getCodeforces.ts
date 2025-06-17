@@ -11,7 +11,7 @@ interface RawContest {
     durationSeconds: number;
     frozen: boolean;
 }
-const getCodeForces = async (): Promise<Contest[]> => {
+const getCodeforces = async (): Promise<Contest[]> => {
     try {
         const response = await fetch(`https://codeforces.com/api/contest.list`)
         const data = await response.json();
@@ -34,4 +34,4 @@ const getCodeForces = async (): Promise<Contest[]> => {
     }
 }
 
-export default getCodeForces
+export { getCodeforces }

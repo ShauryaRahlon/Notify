@@ -1,17 +1,9 @@
 import axios from 'axios';
-
+import { Contest } from '@/model/Contest';
 // Define contest interface matching your schema
-interface Contest {
-  code: string;
-  platform: string;
-  name: string;
-  startTime: Date;
-  endTime: Date;
-  duration: number;
-  url: string;
-}
 
-async function getLeetCodeContests(): Promise<Contest[]> {
+
+async function getLeetcode(): Promise<Contest[]> {
   try {
     const response = await axios.post('https://leetcode.com/graphql', {
       query: `
@@ -50,5 +42,7 @@ async function getLeetCodeContests(): Promise<Contest[]> {
     return [];
   }
 }
+
+export { getLeetcode };
 
 // Example usage
