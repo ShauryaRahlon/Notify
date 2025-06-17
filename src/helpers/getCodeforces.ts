@@ -24,7 +24,7 @@ const getCodeforces = async (): Promise<Contest[]> => {
             name: contest.name,
             startTime: new Date(contest.startTimeSeconds * 1000),
             endTime: new Date((contest.startTimeSeconds + contest.durationSeconds) * 1000),
-            durationInMinutes: Number(contest.durationSeconds) / 60,
+            duration: Number(contest.durationSeconds) / 60,
             url: `https://codeforces.com/contest/${contest.id}`
         }))
         return formattedData;
