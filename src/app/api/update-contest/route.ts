@@ -6,6 +6,9 @@ import { getLeetcode } from '@/helpers/getLeetcode';
 import { Contest } from '@/model/Contest';
 import ContestModel from '@/model/Contest';
 import dbConnect from '@/lib/dbConnect';
+import { sendContestDetails } from '@/helpers/sendContestDetails';
+import { platform } from 'os';
+import { ur } from 'zod/v4/locales';
 interface result {
   leetCode: Contest[];
   codeChef: Contest[];
@@ -19,7 +22,26 @@ export async function GET() {
       getCodechef(),
       getCodeforces(),
     ]);
-    console.log('Fetched contests:', { leetCode, codeChef, codeForces });
+    const currentContest = await ContestModel.find();
+    let allContest = [...leetCode, ...codeChef, ...codeForces];
+    const existingSet = new Set(
+      currentContest.map((contest) => `${contest.code}-${contest.platform}`)
+    );
+    let newContests = [];
+    for (const contest of allContest) {
+      const key = `${contest.code}-${contest.platform}`;
+      if (!existingSet.has(key)) {
+        newContests.push(contest);
+      }
+    }
+    console.log('New contests:', newContests);
+    if (newContests.length === 0) {
+      return NextResponse.json({ success: true, message: "Contest already updated." }, { status: 200 });
+    }
+    const res = await sendContestDetails(newContests);
+    if (!res.success) {
+      return NextResponse.json({ success: false, message: "Failed to send contest details." }, { status: 500 });
+    }
     await ContestModel.deleteMany();
     await ContestModel.insertMany(leetCode);
     await ContestModel.insertMany(codeChef);

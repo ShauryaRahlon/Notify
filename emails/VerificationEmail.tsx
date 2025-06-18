@@ -13,7 +13,7 @@ import * as React from "react";
 
 interface VerificationEmailProps {
   username: string;
-    otp: string;
+  otp: string;
 }
 export default function VerificationEmail({ username, otp }: VerificationEmailProps) {
   return (
@@ -24,13 +24,6 @@ export default function VerificationEmail({ username, otp }: VerificationEmailPr
         <Body className="bg-gray-100 font-sans">
           <Container className="bg-white rounded-2xl shadow-md p-8 max-w-xl mx-auto">
             <Section className="text-center">
-              <Img
-                src="https://yourdomain.com/logo.png"
-                width="80"
-                height="80"
-                alt="Logo"
-                className="mx-auto mb-4"
-              />
               <Text className="text-xl font-bold text-gray-800 mb-2">
                 Welcome to Our App, {username}!
               </Text>
