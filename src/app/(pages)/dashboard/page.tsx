@@ -1,20 +1,27 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { FriendStalker } from "@/components/friend-stalker";
-import { Calendar, Clock, Bell, Star, TrendingUp } from "lucide-react";
+import { Calendar, Clock, Bell, Star, TrendingUp, LogOut } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import QuickSection from "@/components/quick-section";
-import FeaturedContests  from "@/components/featured-contests";
+import FeaturedContests from "@/components/featured-contests";
+import { signOut } from "next-auth/react";
 
 export default function Dashboard() {
- 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-8 space-y-10">
-      {/* Theme Toggle & Accent Picker */}
+      {/* Theme Toggle & Logout */}
       <div className="flex flex-col sm:flex-row justify-end items-center gap-4">
-      
         <ThemeToggle />
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => signOut({ callbackUrl: "/sign-in" })}
+          title="Logout"
+        >
+          <LogOut className="h-5 w-5" />
+        </Button>
       </div>
       {/* Hero Section */}
       <section className="text-center space-y-6 py-12 bg-gradient-to-br from-accent/10 to-background rounded-xl shadow-md">
