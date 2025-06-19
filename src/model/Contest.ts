@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 
-export interface Contest extends Document {
+export interface Contest {
     code: string;
     platform: string;
     name: string;
