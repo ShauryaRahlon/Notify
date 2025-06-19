@@ -1,0 +1,18 @@
+import { getSession } from "next-auth/react";
+import dbConnect from "@/lib/dbConnect";
+import UserModel from "@/model/User";
+
+export async function POST() {
+    try {
+        await dbConnect();
+        const session = await getSession();
+        const User = await UserModel.findOne({ _id: session?.user._id });
+        if (!User) return new Response(JSON.stringify({ success: false }), { status: 400 });
+        User.acceptingContest = !User.acceptingContest;
+        await User.save();
+        return new Response(JSON.stringify({ success: true }), { status: 200 });
+    } catch (error) {
+        console.error("Error accepting notification:", error);
+        return new Response(JSON.stringify({ success: false }), { status: 500 });
+    }
+}
