@@ -7,8 +7,6 @@ import { Contest } from '@/model/Contest';
 import ContestModel from '@/model/Contest';
 import dbConnect from '@/lib/dbConnect';
 import { sendContestDetails } from '@/helpers/sendContestDetails';
-import { platform } from 'os';
-import { ur } from 'zod/v4/locales';
 interface result {
   leetCode: Contest[];
   codeChef: Contest[];
