@@ -24,6 +24,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const Page = () => {
   const [Submitting, setSubmitting] = useState(false);
+  const [featuresOpen, setFeaturesOpen] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -52,7 +53,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-background p-10">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-background p-10">
       <div className="w-full max-w-md p-8 bg-card rounded-2xl shadow-2xl border border-primary/40 animate-fade-in">
         <div className="text-center mb-6">
           <h1 className="text-5xl font-extrabold tracking-tight mb-4 text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
@@ -133,6 +134,74 @@ const Page = () => {
               Forgot Password
             </Link>
           </p>
+        </div>
+      </div>
+      {/* Collapsible Features Box */}
+      <div className="w-full max-w-md mt-4">
+        <button
+          onClick={() => setFeaturesOpen((open) => !open)}
+          className="flex items-center w-full justify-between px-6 mt-2 bg-card border-x border border-primary/40 rounded-xl shadow-md py-4 animate-fade-in text-foreground font-bold text-lg"
+        >
+          <span>Features</span>
+          <span
+            className={`transform transition-transform duration-300 ${
+              featuresOpen ? "rotate-90" : "rotate-0"
+            }`}
+            aria-label={featuresOpen ? "Collapse" : "Expand"}
+          >
+            ▶
+          </span>
+        </button>
+        <div
+          className={`overflow-hidden transition-all duration-500 ${
+            featuresOpen
+              ? "max-h-96 opacity-100 translate-y-0"
+              : "max-h-0 opacity-0 -translate-y-2"
+          } bg-card border-x border border-primary/40 rounded-2xl shadow-md px-6 ${
+            featuresOpen ? "py-4 mt-3" : "py-0 mt-0"
+          }`}
+          style={{ pointerEvents: featuresOpen ? "auto" : "none" }}
+        >
+          <ul className="space-y-2 text-base mb-6">
+            <li className="flex items-center gap-2">
+              <span role="img" aria-label="lock">
+                🔒
+              </span>{" "}
+              Passwordless login without captcha
+            </li>
+            <li className="flex items-center gap-2">
+              <span role="img" aria-label="attendance">
+                📊
+              </span>{" "}
+              Real-time Contest Updates
+            </li>
+            <li className="flex items-center gap-2">
+              <span role="img" aria-label="exam">
+                📝
+              </span>{" "}
+              Schedule Reminders
+            </li>
+            <li className="flex items-center gap-2">
+              <span role="img" aria-label="grades">
+                📈
+              </span>{" "}
+              Add contest to google/ios calendar
+            </li>
+          </ul>
+          <div className="mb-2 font-bold text-lg">Installation Guide</div>
+          <ul className="text-base space-y-1">
+            <li>
+              <span className="font-bold">Android:</span> Press menu → Add to
+              home screen
+            </li>
+            <li>
+              <span className="font-bold">iOS:</span> Share → Add to home screen
+            </li>
+            <li>
+              <span className="font-bold">Windows:</span> Click install icon in
+              URL bar
+            </li>
+          </ul>
         </div>
       </div>
       <div className="absolute top-10 right-4">
