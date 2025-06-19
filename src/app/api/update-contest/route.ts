@@ -45,3 +45,4 @@ export async function POST() {
     return NextResponse.json({ success: false, message: "Failed to update contest." }, { status: 500 });
   }
 }
+//Add check functionlity for reminder and send mail for which remider is closer
