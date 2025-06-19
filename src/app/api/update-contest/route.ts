@@ -7,7 +7,6 @@ import { Contest } from '@/model/Contest';
 import ContestModel from '@/model/Contest';
 import dbConnect from '@/lib/dbConnect';
 import { sendContestDetails } from '@/helpers/sendContestDetails';
-
 export async function POST() {
   try {
     await dbConnect();
