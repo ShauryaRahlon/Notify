@@ -6,7 +6,7 @@ import * as z from "zod";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormField,
@@ -22,6 +22,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const forgotPassSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
+  resetCode: z.string({ required_error: "OTP is required" }),
+  newPassword: z.string({ required_error: "New password is required" }),
 });
 
 const Page = () => {
@@ -31,28 +33,30 @@ const Page = () => {
     resolver: zodResolver(forgotPassSchema),
     defaultValues: {
       email: "",
+      resetCode: "",
+      newPassword: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof forgotPassSchema>) => {
     setSubmitting(true);
-    try {
-      const res = await fetch("/api/forgot-pass", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email }),
-      });
-      const result = await res.json();
-      if (result.success) {
-        toast.success(result.message || "Password reset email sent!");
-        router.replace("/reset-pass");
-      } else {
-        toast.error(result.message || "Failed to send reset email.");
-      }
-    } catch (error) {
-      toast.error("Something went wrong. Please try again later.");
-    }
+    const res = await fetch("/api/reset-pass", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: data.email,
+        resetCode: data.resetCode,
+        newPassword: data.newPassword,
+      }),
+    });
+    const result = await res.json();
     setSubmitting(false);
+    if (result.success) {
+      toast.success(result.message || "Password reset successful");
+      router.replace("/sign-in");
+    } else {
+      toast.error(result.message || "Failed to authenticate");
+    }
   };
 
   return (
@@ -60,11 +64,10 @@ const Page = () => {
       <div className="w-full max-w-md p-8 bg-card rounded-2xl shadow-2xl border border-primary/40 animate-fade-in">
         <div className="text-center mb-6">
           <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
-            Forgot your password?
+            Almost There
           </h1>
           <p className="mb-4 text-lg text-muted-foreground font-semibold">
-            Enter your email and we'll send you instructions to reset your
-            password.
+            Enter your email and the verification code sent on your email.
           </p>
         </div>
         <Form {...form}>
@@ -88,6 +91,44 @@ const Page = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="resetCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex flex-col justify-center items-start text-sm font-medium text-muted-foreground mb-2 bg-center">
+                    OTP
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Enter the OTP sent to your account"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="newPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex flex-col justify-center items-start text-sm font-medium text-muted-foreground mb-2 bg-center">
+                    New Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Enter your new password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button
               type="submit"
               disabled={submitting}
@@ -96,7 +137,7 @@ const Page = () => {
               {submitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                "Send Reset Link"
+                "Reset Password"
               )}
             </Button>
           </form>
