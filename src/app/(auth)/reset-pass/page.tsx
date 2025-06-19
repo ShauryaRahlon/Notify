@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import {
@@ -59,6 +59,41 @@ const Page = () => {
     }
   };
 
+  // OTP state for 6 digits
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const otpRefs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
+
+  // Update OTP state and move focus
+  const handleOtpChange = (idx: number, value: string) => {
+    if (!/^[0-9a-zA-Z]?$/.test(value)) return;
+    const newOtp = [...otp];
+    newOtp[idx] = value;
+    setOtp(newOtp);
+    // Move to next input if value entered
+    if (value && idx < 5) {
+      otpRefs[idx + 1].current?.focus();
+    }
+    // Update form value
+    form.setValue("resetCode", newOtp.join(""));
+  };
+
+  // Handle backspace to move focus
+  const handleOtpKeyDown = (
+    idx: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && !otp[idx] && idx > 0) {
+      otpRefs[idx - 1].current?.focus();
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-background p-10">
       <div className="w-full max-w-md p-8 bg-card rounded-2xl shadow-2xl border border-primary/40 animate-fade-in">
@@ -91,21 +126,39 @@ const Page = () => {
                 </FormItem>
               )}
             />
+            {/* OTP 6-box input */}
             <FormField
               control={form.control}
               name="resetCode"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel className="flex flex-col justify-center items-start text-sm font-medium text-muted-foreground mb-2 bg-center">
-                    OTP
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Enter the OTP sent to your account"
-                      {...field}
-                    />
-                  </FormControl>
+                  <div className="flex items-center justify-center gap-x-4 mb-2">
+                    <FormLabel className="text-center text-sm font-medium text-muted-foreground mb-0 whitespace-nowrap">
+                      OTP
+                    </FormLabel>
+                    <div className="flex gap-2">
+                      {otp.map((digit, idx) => (
+                        <Input
+                          key={idx}
+                          ref={otpRefs[idx]}
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={1}
+                          className={`w-10 h-10 text-center text-lg font-bold border border-primary/60 rounded focus:ring-2 focus:ring-primary transition-all bg-background
+                            ${digit ? "animate-otp-bounce" : ""} focus:animate-otp-focus`}
+                          style={{
+                            animationDuration: "0.25s",
+                            animationTimingFunction:
+                              "cubic-bezier(0.4, 0, 0.2, 1)",
+                          }}
+                          value={digit}
+                          onChange={(e) => handleOtpChange(idx, e.target.value)}
+                          onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                          autoComplete="one-time-code"
+                        />
+                      ))}
+                    </div>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -162,3 +215,24 @@ const Page = () => {
 };
 
 export default Page;
+
+/* Add custom keyframes for animations at the bottom of the file (or in a global CSS if preferred)
+If using Tailwind, add these to your globals.css or tailwind config:
+@layer utilities {
+  @keyframes otp-bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .animate-otp-bounce {
+    animation: otp-bounce 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes otp-focus {
+    0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.5); }
+    100% { box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2); }
+  }
+  .focus\:animate-otp-focus:focus {
+    animation: otp-focus 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+*/

@@ -65,9 +65,7 @@ const Page = () => {
             </span>
           </p>
         </div>
-        <div className="flex justify-end mb-4">
-          
-        </div>
+        <div className="flex justify-end mb-4"></div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -126,10 +124,19 @@ const Page = () => {
               Create an account
             </Link>
           </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Can't remember your password?{" "}
+            <Link
+              href="/forgot-pass"
+              className="text-pink-500 font-semibold hover:underline"
+            >
+              Forgot Password
+            </Link>
+          </p>
         </div>
       </div>
       <div className="absolute top-10 right-4">
-      <ThemeToggle />
+        <ThemeToggle />
       </div>
     </div>
   );
