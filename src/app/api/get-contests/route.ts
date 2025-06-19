@@ -7,7 +7,7 @@ export async function GET() {
     try {
         await dbConnect();
         const contests = await ContestModel.find();
-        return NextResponse.json({ success: true, data: contests }, { status: 200 });
+        return NextResponse.json({ success: true, message: contests }, { status: 200 });
     } catch (error) {
         console.error('Error fetching contests:', error);
         return NextResponse.json({ success: false, message: "Failed to fetch contests." }, { status: 500 });

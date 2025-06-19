@@ -1,61 +1,79 @@
-"use client"
+"use client";
 
-import type { Contest } from "@/lib/types"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Clock, Users, ExternalLink, Bell } from "lucide-react"
-import { platformColors, platformNames } from "@/lib/mock-data"
-import { formatDistanceToNow, format } from "date-fns"
-import { useState } from "react"
-import { useToast } from "@/hooks/use-toast"
+import type { Contest } from "@/model/Contest";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Clock, ExternalLink, Bell } from "lucide-react";
+import { platformColors, platformNames } from "@/lib/mock-data";
+import { formatDistanceToNow, format } from "date-fns";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface ContestCardProps {
-  contest: Contest
-  onSetReminder?: (contestId: string) => void
-  onViewDetails?: (contest: Contest) => void
+  contest: Contest;
+  onSetReminder?: (contestId: string) => void;
+  onViewDetails?: (contest: Contest) => void;
 }
 
-export function ContestCard({ contest, onSetReminder, onViewDetails }: ContestCardProps) {
-  const [reminderSet, setReminderSet] = useState(false)
-  const { toast } = useToast()
+export function ContestCard({
+  contest,
+  onSetReminder,
+  onViewDetails,
+}: ContestCardProps) {
+  const [reminderSet, setReminderSet] = useState(false);
+
+  // Platform color mapping for dot and border
+  const getPlatformColor = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case "leetcode":
+        return "#FFA116"; // orange
+      case "codechef":
+        return "#5B4638"; // brown
+      case "codeforces":
+        return "#888888"; // grey
+      default:
+        return "#6366f1"; // fallback (indigo)
+    }
+  };
 
   const handleSetReminder = () => {
-    setReminderSet(!reminderSet)
-    onSetReminder?.(contest.id)
-    toast({
-      title: reminderSet ? "Reminder removed" : "Reminder set",
-      description: reminderSet
-        ? "You will no longer be notified about this contest"
-        : "You will be notified 1 hour before the contest starts",
-    })
-  }
+    setReminderSet(!reminderSet);
+    onSetReminder?.(contest.code);
+    toast(
+      reminderSet
+        ? "Reminder removed: You will no longer be notified about this contest"
+        : "Reminder set: You will be notified 1 hour before the contest starts"
+    );
+  };
 
-  const getDifficultyColor = (difficulty?: string) => {
-    switch (difficulty) {
-      case "easy":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-      case "medium":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-      case "hard":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"
-    }
-  }
-
-  const isStartingSoon = contest.startTime.getTime() - Date.now() < 60 * 60 * 1000 // 1 hour
+  const startTime =
+    contest.startTime instanceof Date
+      ? contest.startTime
+      : new Date(contest.startTime);
+  const isStartingSoon = startTime.getTime() - Date.now() < 60 * 60 * 1000; // 1 hour
 
   return (
     <Card
       className="group hover:shadow-lg transition-all duration-200 border-l-4"
-      style={{ borderLeftColor: `var(--${contest.platform}-color, #6366f1)` }}
+      style={{ borderLeftColor: getPlatformColor(contest.platform) }}
     >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-2">
-            <div className={`w-3 h-3 rounded-full ${platformColors[contest.platform]}`} />
-            <span className="text-sm font-medium text-muted-foreground">{platformNames[contest.platform]}</span>
+            <div
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: getPlatformColor(contest.platform) }}
+            />
+            <span className="text-sm font-medium text-muted-foreground">
+              {platformNames[contest.platform as keyof typeof platformNames] ||
+                contest.platform}
+            </span>
           </div>
           {isStartingSoon && (
             <Badge variant="destructive" className="text-xs">
@@ -64,7 +82,7 @@ export function ContestCard({ contest, onSetReminder, onViewDetails }: ContestCa
           )}
         </div>
         <h3 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">
-          {contest.title}
+          {contest.name}
         </h3>
       </CardHeader>
 
@@ -79,32 +97,31 @@ export function ContestCard({ contest, onSetReminder, onViewDetails }: ContestCa
           </span>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-            <Users className="h-4 w-4" />
-            <span>{contest.participants?.toLocaleString() || "TBD"}</span>
-          </div>
-          {contest.difficulty && <Badge className={getDifficultyColor(contest.difficulty)}>{contest.difficulty}</Badge>}
-        </div>
-
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {contest.description || "No description available"}
-        </p>
-
         <div className="text-sm text-muted-foreground">
           Starts {formatDistanceToNow(contest.startTime, { addSuffix: true })}
         </div>
       </CardContent>
 
       <CardFooter className="flex space-x-2 pt-3">
-        <Button variant={reminderSet ? "default" : "outline"} size="sm" onClick={handleSetReminder} className="flex-1">
-          <Bell className={`h-4 w-4 mr-1 ${reminderSet ? "fill-current" : ""}`} />
+        <Button
+          variant={reminderSet ? "default" : "outline"}
+          size="sm"
+          onClick={handleSetReminder}
+          className="flex-1"
+        >
+          <Bell
+            className={`h-4 w-4 mr-1 ${reminderSet ? "fill-current" : ""}`}
+          />
           {reminderSet ? "Reminder Set" : "Set Reminder"}
         </Button>
-        <Button variant="outline" size="sm" onClick={() => window.open(contest.url, "_blank")}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => window.open(contest.url, "_blank")}
+        >
           <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

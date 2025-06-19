@@ -102,7 +102,6 @@ export function FriendStalker() {
               placeholder="Enter LeetCode username..."
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-            
               className="flex-1 max-w-full shadow-sm w-full sm:w-auto"
             />
             <Button
@@ -244,22 +243,30 @@ export function FriendStalker() {
                 </CardHeader>
                 <CardContent className="pt-4">
                   <div className="overflow-x-auto w-full">
-                    <table className="min-w-full hidden md:flex text-sm rounded-lg overflow-hidden">
+                    <table className="min-w-full hidden md:table text-sm rounded-lg overflow-hidden">
                       <thead>
                         <tr className="text-left text-muted-foreground bg-background/80">
-                          <th className="px-3 py-2">Title</th>
-                          <th className="px-3 py-2">Status</th>
-                          <th className="px-3 py-2">Language</th>
-                          <th className="px-3 py-2">Time</th>
+                          <th className="px-3 py-2 font-semibold table-cell">
+                            Title
+                          </th>
+                          <th className="px-3 py-2 font-semibold table-cell">
+                            Status
+                          </th>
+                          <th className="px-3 py-2 font-semibold table-cell">
+                            Language
+                          </th>
+                          <th className="px-3 py-2 font-semibold table-cell">
+                            Time
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {!userData.recentSubmissionList ||
                         userData.recentSubmissionList.length === 0 ? (
-                          <tr>
+                          <tr className="table-row">
                             <td
                               colSpan={4}
-                              className="text-center py-4 text-muted-foreground"
+                              className="text-center py-4 text-muted-foreground table-cell"
                             >
                               No recent submissions found.
                             </td>
@@ -272,9 +279,9 @@ export function FriendStalker() {
                           ).map((sub: any, i: number) => (
                             <tr
                               key={i}
-                              className="border-b last:border-0 hover:bg-accent/10 transition"
+                              className="border-b last:border-0 hover:bg-accent/10 transition table-row"
                             >
-                              <td className="py-2 pr-4 max-w-[180px] truncate">
+                              <td className="py-2 pr-4 max-w-[180px] truncate table-cell">
                                 <a
                                   href={`https://leetcode.com/problems/${sub.titleSlug}/`}
                                   target="_blank"
@@ -284,7 +291,7 @@ export function FriendStalker() {
                                   {sub.title}
                                 </a>
                               </td>
-                              <td className="py-2 pr-4">
+                              <td className="py-2 pr-4 table-cell">
                                 <span
                                   className={`px-2 py-1 rounded ${statusColor(
                                     sub.statusDisplay
@@ -293,8 +300,10 @@ export function FriendStalker() {
                                   {sub.statusDisplay}
                                 </span>
                               </td>
-                              <td className="py-2 pr-4">{sub.lang}</td>
-                              <td className="py-2 pr-4 whitespace-nowrap">
+                              <td className="py-2 pr-4 table-cell">
+                                {sub.lang}
+                              </td>
+                              <td className="py-2 pr-4 whitespace-nowrap table-cell">
                                 {new Date(
                                   Number(sub.timestamp) * 1000
                                 ).toLocaleString()}
@@ -304,8 +313,11 @@ export function FriendStalker() {
                         )}
                         {userData.recentSubmissionList &&
                           userData.recentSubmissionList.length > 6 && (
-                            <tr>
-                              <td colSpan={4} className="text-center py-2">
+                            <tr className="table-row">
+                              <td
+                                colSpan={4}
+                                className="text-center py-2 table-cell"
+                              >
                                 <Button
                                   variant="ghost"
                                   size="sm"

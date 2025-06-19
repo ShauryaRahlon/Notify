@@ -7,14 +7,8 @@ import { Contest } from '@/model/Contest';
 import ContestModel from '@/model/Contest';
 import dbConnect from '@/lib/dbConnect';
 import { sendContestDetails } from '@/helpers/sendContestDetails';
-import { platform } from 'os';
-import { ur } from 'zod/v4/locales';
-interface result {
-  leetCode: Contest[];
-  codeChef: Contest[];
-  codeForces: Contest[];
-}
-export async function GET() {
+
+export async function POST() {
   try {
     await dbConnect();
     const [leetCode, codeChef, codeForces]: [Contest[], Contest[], Contest[]] = await Promise.all([
