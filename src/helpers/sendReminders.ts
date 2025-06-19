@@ -22,7 +22,9 @@ export async function sendReminders(tosend: Reminder[]): Promise<ApiResponse> {
             }
         });
         for (const reminder of tosend) {
-            const htmlcontent = await render(React.createElement(ReminderEmail, { ...reminder.contest }));
+            console.log(reminder);
+            const contest = reminder.contest;
+            const htmlcontent = await render(React.createElement(ReminderEmail, { code: contest.code, name: contest.name, platform: contest.platform, startTime: contest.startTime, endTime: contest.endTime, duration: contest.duration, url: contest.url }));
             const mailOptions: MailOptions = {
                 from: process.env.NODEMAILER_EMAIL,
                 to: reminder.emails,
