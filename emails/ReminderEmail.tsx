@@ -54,6 +54,7 @@ export default function ReminderEmail({
     url,
 }: Contest) {
     const theme = platformStyles[platform as keyof typeof platformStyles];
+    console.log(theme);
     return (
         <Html>
             <Head />
