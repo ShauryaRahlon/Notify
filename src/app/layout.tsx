@@ -18,6 +18,25 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Contest Tracker",
   description: "A simple application to track your contests.",
+  manifest: "/manifest.json",
+  themeColor: "#f97316",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Contest Tracker",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  icons: {
+    icon: [
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icon-192x192.png", sizes: "192x192", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +53,6 @@ export default function RootLayout({
           <AuthProvider>
             {children}
             <Toaster richColors position="top-right" />
-           
           </AuthProvider>
         </ThemeProvider>
       </body>
