@@ -9,7 +9,7 @@ import dbConnect from '@/lib/dbConnect';
 import { sendContestDetails } from '@/helpers/sendContestDetails';
 import ReminderModel from '@/model/Reminder';
 import { sendReminders } from '@/helpers/sendReminders';
-export async function POST() {
+export async function GET() {
   try {
     await dbConnect();
     const [leetCode, codeChef, codeForces]: [Contest[], Contest[], Contest[]] = await Promise.all([

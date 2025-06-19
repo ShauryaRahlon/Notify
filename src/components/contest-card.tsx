@@ -20,6 +20,33 @@ interface ContestCardProps {
   onSetReminder?: (contestId: string) => void;
   onViewDetails?: (contest: Contest) => void;
 }
+import axios from "axios";
+async function addReminder(contest: Contest) {
+  // This function can be used to set a reminder for the contest
+  // You can implement the logic to save the reminder in your database
+  try {
+    const response = await axios.post("/api/set-reminder", {
+      contest,
+    });
+    if (response.data.success) {
+      return {
+        success: true,
+        message: "Reminder set successfully.",
+      };
+    } else if (response.data.message) {
+      return {
+        success: false,
+        message: response.data.message,
+      };
+    }
+  } catch (error) {
+    console.error("Error setting reminder:", error);
+    return {
+      success: false,
+      message: "Failed to set reminder.",
+    };
+  }
+}
 
 export function ContestCard({
   contest,
@@ -43,6 +70,20 @@ export function ContestCard({
   };
 
   const handleSetReminder = () => {
+    addReminder(contest).then((result) => {
+      if (result && result.success) {
+        toast("Reminder set successfully!");
+      } else {
+        toast((result && result.message) || "Failed to set reminder.");
+      }
+    });
+    if (reminderSet) {
+      // If reminder is already set, remove it
+      setReminderSet(false);
+      onSetReminder?.(contest.code);
+      toast("Reminder removed: You will no longer be notified about this contest");
+      return;
+    }
     setReminderSet(!reminderSet);
     onSetReminder?.(contest.code);
     toast(

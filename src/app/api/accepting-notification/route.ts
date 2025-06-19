@@ -1,11 +1,12 @@
 import { getSession } from "next-auth/react";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
+import { getServerSession } from "next-auth/next";
 
 export async function POST() {
     try {
         await dbConnect();
-        const session = await getSession();
+        const session = await getServerSession();
         const User = await UserModel.findOne({ _id: session?.user._id });
         if (!User) return new Response(JSON.stringify({ success: false }), { status: 400 });
         User.acceptingContest = !User.acceptingContest;

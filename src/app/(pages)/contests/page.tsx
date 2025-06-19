@@ -33,21 +33,10 @@ export default function ContestsPage() {
       try {
         const response = await fetch("/api/get-contests");
         const data = await response.json();
+        console.log("Fetched contests:", data);
         // Normalize contests to match UI type
-        const normalized = (data.message || []).map((c: any) => ({
-          id: c.code || c._id || c.id || c.name,
-          title: c.name || c.title,
-          platform: c.platform?.toLowerCase?.() || c.platform,
-          startTime: new Date(c.startTime),
-          duration: c.duration,
-          url: c.url,
-          difficulty: c.difficulty || undefined,
-          description: c.description || undefined,
-          participants: c.participants || undefined,
-          prizes: c.prizes || undefined,
-          // fallback for other fields if needed
-        }));
-        setContests(normalized);
+
+        setContests(data.message);
       } catch (e) {
         setContests([]);
       } finally {
@@ -60,16 +49,12 @@ export default function ContestsPage() {
   const filteredAndSortedContests = useMemo(() => {
     let filtered = contests.filter((contest) => {
       const matchesSearch =
-        contest.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        contest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         contest.platform?.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesPlatform =
         selectedPlatforms.length === 0 ||
         selectedPlatforms.includes(contest.platform);
-      const matchesDifficulty =
-        !selectedDifficulty ||
-        selectedDifficulty === "all" ||
-        contest.difficulty === selectedDifficulty;
-      return matchesSearch && matchesPlatform && matchesDifficulty;
+      return matchesSearch && matchesPlatform;
     });
     filtered.sort((a, b) => {
       switch (sortBy) {
@@ -82,8 +67,7 @@ export default function ContestsPage() {
         case "duration":
           return a.duration - b.duration;
         case "name":
-        case "title":
-          return (a.title || a.name).localeCompare(b.title || b.name);
+          return a.name.localeCompare(b.name);
         default:
           return 0;
       }
