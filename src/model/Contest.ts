@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 
-export interface Contest {
+export interface Contest extends Document {
     code: string;
     platform: string;
     name: string;
@@ -11,7 +11,7 @@ export interface Contest {
     url: string;
 }
 
-const ContestSchema: Schema<Contest> = new Schema({
+export const ContestSchema: Schema<Contest> = new Schema({
     code: { type: String, required: true },
     platform: { type: String, required: true },
     name: { type: String, required: true },

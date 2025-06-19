@@ -45,11 +45,11 @@ export default function FeaturedContests() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredContests.length > 0 ? (
-                featuredContests.map((contest) => (
+              [...featuredContests].reverse().slice(0, 3).map((contest) => (
                 <ContestCard key={contest.code} contest={contest} />
-                ))
+              ))
             ) : (
-                <p className="text-muted-foreground">No contests available at the moment.</p>
+              <p className="text-muted-foreground">No contests available at the moment.</p>
             )}
         </div>
       </>
