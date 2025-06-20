@@ -17,9 +17,9 @@ interface MailOptions {
 export async function sendContestDetails(contestDetails: Contest[]): Promise<ApiResponse> {
     try {
         await dbConnect();
-        const usersLeetCode = await UserModel.find({ LeetCode: true, acceptingContest: true });
-        const usersCodeForces = await UserModel.find({ CodeForces: true, acceptingContest: true });
-        const usersCodeChef = await UserModel.find({ CodeChef: true, acceptingContest: true });
+        const usersLeetCode = await UserModel.find({ LeetCode: true, emailNotifications: true });
+        const usersCodeForces = await UserModel.find({ CodeForces: true, emailNotifications: true });
+        const usersCodeChef = await UserModel.find({ CodeChef: true, emailNotifications: true });
         const emails_leetcode = usersLeetCode.map(user => user.email);
         const emails_codeforces = usersCodeForces.map(user => user.email);
         const emails_codechef = usersCodeChef.map(user => user.email);

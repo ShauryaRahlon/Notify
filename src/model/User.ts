@@ -7,12 +7,17 @@ export interface User extends Document {
   isVerified: boolean;
   verifyCode: string;
   verifyCodeExpires: Date;
-  acceptingContest: boolean;
   resetCode?: string;
   resetCodeExpires?: Date;
   LeetCode?: boolean;
   CodeForces?: boolean;
   CodeChef?: boolean;
+  oneHourBefore?: boolean;
+  oneDayBefore?: boolean;
+  emailNotifications?: boolean;
+  browserNotifications?: boolean;
+  pushNotifications?: boolean;
+
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -33,12 +38,16 @@ const UserSchema: Schema<User> = new Schema({
   verifyCode: { type: String },
   verifyCodeExpires: { type: Date },
   isVerified: { type: Boolean, default: false },
-  acceptingContest: { type: Boolean, default: false },
   resetCode: { type: String },
   resetCodeExpires: { type: Date },
   LeetCode: { type: Boolean, default: true },
   CodeForces: { type: Boolean, default: true },
   CodeChef: { type: Boolean, default: true },
+  oneHourBefore: { type: Boolean, default: true },
+  oneDayBefore: { type: Boolean, default: true },
+  emailNotifications: { type: Boolean, default: true },
+  browserNotifications: { type: Boolean, default: true },
+  pushNotifications: { type: Boolean, default: true },
 });
 
 const UserModel =
