@@ -41,19 +41,41 @@ export async function POST(req: Request) {
   }
 }
 
-// export async function GET() {
-//   try {
-//     await dbConnect();
-//     const session = await getServerSession();
-//     const User = await UserModel.findOne({ _id: session?.user._id });
-//     if (!User)
-//       return new Response(JSON.stringify({ success: false }), { status: 400 });
-//     return new Response(
-//       JSON.stringify({ acceptingContest: User.acceptingContest }),
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("Error fetching notification status:", error);
-//     return new Response(JSON.stringify({ success: false }), { status: 500 });
-//   }
-// }
+export async function GET() {
+  try {
+    await dbConnect();
+    const session = await getServerSession(authOptions);
+    if (!session?.user?._id) {
+      return new Response(
+        JSON.stringify({ success: false, message: "Not authenticated" }),
+        { status: 401 }
+      );
+    }
+    const User = await UserModel.findOne({ _id: session.user._id });
+    if (!User)
+      return new Response(JSON.stringify({ success: false }), { status: 400 });
+    return new Response(
+      JSON.stringify({
+        success: true,
+        emailPreferences: {
+          oneHour: User.oneHourBefore,
+          oneDay: User.oneDayBefore,
+        },
+        platformPreferences: {
+          leetcode: User.LeetCode,
+          codeforces: User.CodeForces,
+          codechef: User.CodeChef,
+        },
+        notifications: {
+          email: User.emailNotifications,
+          browser: User.browserNotifications,
+          push: User.pushNotifications,
+        },
+      }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching settings:", error);
+    return new Response(JSON.stringify({ success: false }), { status: 500 });
+  }
+}

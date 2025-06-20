@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -37,32 +37,29 @@ export default function SettingsPage() {
     },
   });
 
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const userSettings = await axios.get("/api/change-settings");
+        setSettings(userSettings.data);
+      } catch (error) {
+        console.error("Failed to fetch settings:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load settings. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    };
+    loadSettings();
+  }, []);
+
   const handleSave = async () => {
     try {
       const res = await axios.post("/api/change-settings", settings);
       if (!res.data.success) {
         throw new Error("Failed to save settings");
       }
-      // await fetchSettings(); // Refresh settings after save
-      // setSettings(res.data.settings); // Update local state with new settings
-      // ye baad mein kareinge
-      // setSettings((prev) => ({
-      //   ...prev,
-      //   emailPreferences: {
-      //     oneHour: prev.emailPreferences.oneHour,
-      //     oneDay: prev.emailPreferences.oneDay,
-      //   },
-      //   platformPreferences: {
-      //     leetcode: prev.platformPreferences.leetcode,
-      //     codeforces: prev.platformPreferences.codeforces,
-      //     codechef: prev.platformPreferences.codechef,
-      //   },
-      //   notifications: {
-      //     email: prev.notifications.email,
-      //     browser: prev.notifications.browser,
-      //     push: prev.notifications.push,
-      //   },
-      // }));
       if (res.data.success) {
         alert("Settings saved successfully!");
         // Optionally, you can update the local state with the new settings
