@@ -7,6 +7,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import QuickSection from "@/components/quick-section";
 import FeaturedContests from "@/components/featured-contests";
 import { signOut } from "next-auth/react";
+import ScrollVelocity from '@/components/ui/ScrollVelocity';
+  
 
 export default function Dashboard() {
   return (
@@ -28,11 +30,16 @@ export default function Dashboard() {
         <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-300 dark:via-purple-300 dark:to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
           Track, Compete, Win.
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Discover, track, and get notified for coding contests across all major
-          platforms. Stay ahead, improve your skills, and never miss a chance to
-          compete!
-        </p>
+        <ScrollVelocity
+          texts={[
+            'Get notified for coding contests.',
+            'Never miss a chance to compete!',
+          ]}
+          numCopies={6}
+          velocity={70}
+          className=" text-2xl tracking-normal text-warning-foreground font-light max-w-2xl mx-auto"
+        />
+        
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <Button size="lg" className="shadow-md" asChild>
             <Link href="/contests">

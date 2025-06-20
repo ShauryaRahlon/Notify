@@ -1,20 +1,20 @@
 {
-	"name": "Contest Tracker",
-	"short_name": "Contest Tracker",
+	"name": "Notify",
+	"short_name": "Notify",
 	"description": "Never miss any Coding contest",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#000000",
-	"theme_color": "#f97316",
+	"theme_color": "#f5be23",
     "icons": [
 		{
-			"src": "/icon-192x192.png",
+			"src": "/logo_bg_192.png",
 			"sizes": "192x192",
 			"type": "image/png",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "/icon-512x512.png",
+			"src": "/logo_bg_512.png",
 			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "any maskable"

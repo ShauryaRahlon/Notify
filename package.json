@@ -1,5 +1,5 @@
 {
-  "name": "paw-alert",
+  "name": "notify",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,6 +22,7 @@
     "@radix-ui/react-use-is-hydrated": "^0.1.0",
     "@react-email/components": "^0.0.42",
     "@react-email/render": "^1.1.2",
+    "@tabler/icons-react": "^3.34.0",
     "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "cheerio": "^1.1.0",
@@ -29,9 +30,11 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "formidable": "^3.5.4",
+    "framer-motion": "^12.18.1",
     "leetcode-query": "^2.0.0",
     "lucide-react": "^0.514.0",
     "mongoose": "^8.15.2",
+    "motion": "^12.18.1",
     "multer": "^2.0.1",
     "next": "^15.3.3",
     "next-auth": "^4.24.11",

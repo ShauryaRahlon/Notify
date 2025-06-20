@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Notify
 
-## Getting Started
+A modern, full-stack web application to track, discover, and get notified about upcoming programming contests from major platforms like Codeforces, CodeChef, and LeetCode. Built with Next.js, MongoDB, and a beautiful, responsive UI.
 
-First, run the development server:
+---
+
+![Notify Banner](public/logo_bg.png)
+
+## ✨ Features
+
+- **Contest Aggregation:** Fetches and displays upcoming contests from multiple platforms.
+- **Personalized Reminders:** Set email reminders for contests so you never miss out.
+- **Authentication:** Secure sign-up, sign-in, email verification, and password reset.
+- **Dashboard:** Manage your reminders, preferences, and contest interests.
+- **Responsive UI:** Beautiful, modern design with dark/light themes.
+- **PWA Support:** Installable as a Progressive Web App for desktop and mobile.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js (App Router), React, Tailwind CSS, Framer Motion
+- **Backend:** Next.js API routes, MongoDB (Mongoose)
+- **Auth:** NextAuth.js
+- **Email:** Nodemailer, React Email
+- **Other:** Radix UI, Zod, Axios, Styled Components
+
+---
+
+## 📁 Folder Structure
+
+```
+├── emails/           # Email templates (React components)
+├── public/           # Static assets (images, icons, manifest)
+├── src/
+│   ├── app/          # Next.js app directory (routing, pages, API)
+│   ├── components/   # UI and feature components
+│   ├── context/      # React context providers
+│   ├── helpers/      # Utility functions (scrapers, email senders)
+│   ├── hooks/        # Custom React hooks
+│   ├── lib/          # Database and API utilities
+│   ├── model/        # Mongoose models (User, Contest, Reminder)
+│   ├── schemas/      # Zod validation schemas
+│   ├── types/        # TypeScript types
+│   └── middleware.ts # Middleware (auth, etc.)
+├── package.json      # Project metadata and scripts
+├── next.config.ts    # Next.js configuration
+├── tsconfig.json     # TypeScript configuration
+└── README.md         # Project documentation
+```
+
+---
+
+## 🚦 Getting Started (Local Setup)
+
+### 1. **Clone the Repository**
+
+```bash
+git clone https://github.com/your-username/contest-tracker.git
+cd contest-tracker
+```
+
+### 2. **Install Dependencies**
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. **Configure Environment Variables**
+
+Create a `.env.local` file in the root directory and add the following:
+
+```
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+EMAIL_SERVER_USER=your_email@example.com
+EMAIL_SERVER_PASSWORD=your_email_password
+EMAIL_SERVER_HOST=smtp.example.com
+EMAIL_SERVER_PORT=465
+EMAIL_FROM=Contest Tracker <noreply@contest-tracker.com>
+```
+
+> **Note:** You can use services like [MongoDB Atlas](https://www.mongodb.com/atlas) and [Mailtrap](https://mailtrap.io/) for development.
+
+### 4. **Run the Development Server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧑‍💻 Usage Guide
 
-## Learn More
+- **Sign Up:** Create an account and verify your email.
+- **Browse Contests:** View upcoming contests from supported platforms.
+- **Set Reminders:** Click on a contest to set an email reminder.
+- **Dashboard:** Manage your reminders and account settings.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🙏 Credits
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Made with ❤️ by:
+
+- **Shaurya Rahlon**
+- **Vansh Arora**
+- **Himanshu Singh**
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+> _"Track. Prepare. Win. Never miss a contest again!"_
