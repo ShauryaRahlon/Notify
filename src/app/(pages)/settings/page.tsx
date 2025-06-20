@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
-import { Separator } from "@/components/ui/separator"
-import type { UserSettings } from "@/lib/types"
-import { platformNames } from "@/lib/mock-data"
-import { useToast } from "@/hooks/use-toast"
-import { Bell, Mail, Globe } from "lucide-react"
-import axios from "axios"
+import { Separator } from "@/components/ui/separator";
+import type { UserSettings } from "@/lib/types";
+import { platformNames } from "@/lib/mock-data";
+import { useToast } from "@/hooks/use-toast";
+import { Bell, Mail, Globe } from "lucide-react";
+import axios from "axios";
 
 async function fetchSettings() {
-  const response = await axios.get("/api/settings")
-  return response.data as UserSettings
+  const response = await axios.get("/api/settings");
+  return response.data as UserSettings;
 }
-  
+
 export default function SettingsPage() {
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [settings, setSettings] = useState<UserSettings>({
     emailPreferences: {
       oneHour: true,
@@ -35,52 +35,100 @@ export default function SettingsPage() {
       browser: true,
       push: false,
     },
-  })
+  });
 
-  const handleSave = () => {
-    // In a real app, this would save to a backend
-    toast({
-      title: "Settings saved",
-      description: "Your preferences have been updated successfully.",
-    })
-  }
+  const handleSave = async () => {
+    try {
+      const res = await axios.post("/api/change-settings", settings);
+      if (!res.data.success) {
+        throw new Error("Failed to save settings");
+      }
+      // await fetchSettings(); // Refresh settings after save
+      // setSettings(res.data.settings); // Update local state with new settings
+      // ye baad mein kareinge
+      // setSettings((prev) => ({
+      //   ...prev,
+      //   emailPreferences: {
+      //     oneHour: prev.emailPreferences.oneHour,
+      //     oneDay: prev.emailPreferences.oneDay,
+      //   },
+      //   platformPreferences: {
+      //     leetcode: prev.platformPreferences.leetcode,
+      //     codeforces: prev.platformPreferences.codeforces,
+      //     codechef: prev.platformPreferences.codechef,
+      //   },
+      //   notifications: {
+      //     email: prev.notifications.email,
+      //     browser: prev.notifications.browser,
+      //     push: prev.notifications.push,
+      //   },
+      // }));
+      if (res.data.success) {
+        alert("Settings saved successfully!");
+        // Optionally, you can update the local state with the new settings
+        console.log("Settings save response:", res.data);
+        toast({
+          title: "Settings saved",
+          description: "Your preferences have been updated successfully.",
+        });
+      }
+    } catch (error) {
+      console.error("Settings save error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save settings. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
-  const updateEmailPreferences = (key: keyof typeof settings.emailPreferences, value: boolean) => {
+  const updateEmailPreferences = (
+    key: keyof typeof settings.emailPreferences,
+    value: boolean
+  ) => {
     setSettings((prev) => ({
       ...prev,
       emailPreferences: {
         ...prev.emailPreferences,
         [key]: value,
       },
-    }))
-  }
+    }));
+  };
 
-  const updatePlatformPreferences = (key: keyof typeof settings.platformPreferences, value: boolean) => {
+  const updatePlatformPreferences = (
+    key: keyof typeof settings.platformPreferences,
+    value: boolean
+  ) => {
     setSettings((prev) => ({
       ...prev,
       platformPreferences: {
         ...prev.platformPreferences,
         [key]: value,
       },
-    }))
-  }
+    }));
+  };
 
-  const updateNotifications = (key: keyof typeof settings.notifications, value: boolean) => {
+  const updateNotifications = (
+    key: keyof typeof settings.notifications,
+    value: boolean
+  ) => {
     setSettings((prev) => ({
       ...prev,
       notifications: {
         ...prev.notifications,
         [key]: value,
       },
-    }))
-  }
+    }));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Settings</h1>
-          <p className="text-muted-foreground">Manage your contest tracking preferences and notifications</p>
+          <p className="text-muted-foreground">
+            Manage your contest tracking preferences and notifications
+          </p>
         </div>
 
         {/* Email Preferences */}
@@ -95,27 +143,34 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <Label htmlFor="one-hour" className="flex flex-col space-y-1">
                 <span>1 Hour Before</span>
-                <span className="text-sm text-muted-foreground">Get notified 1 hour before contest starts</span>
+                <span className="text-sm text-muted-foreground">
+                  Get notified 1 hour before contest starts
+                </span>
               </Label>
               <Switch
                 id="one-hour"
                 checked={settings.emailPreferences.oneHour}
-                onCheckedChange={(value) => updateEmailPreferences("oneHour", value)}
+                onCheckedChange={(value) =>
+                  updateEmailPreferences("oneHour", value)
+                }
               />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <Label htmlFor="one-day" className="flex flex-col space-y-1">
                 <span>1 Day Before</span>
-                <span className="text-sm text-muted-foreground">Get notified 1 day before contest starts</span>
+                <span className="text-sm text-muted-foreground">
+                  Get notified 1 day before contest starts
+                </span>
               </Label>
               <Switch
                 id="one-day"
                 checked={settings.emailPreferences.oneDay}
-                onCheckedChange={(value) => updateEmailPreferences("oneDay", value)}
+                onCheckedChange={(value) =>
+                  updateEmailPreferences("oneDay", value)
+                }
               />
             </div>
-            
           </CardContent>
         </Card>
 
@@ -133,24 +188,34 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <Label htmlFor={key} className="flex flex-col space-y-1">
                     <span>{name}</span>
-                    <span className="text-sm text-muted-foreground">Track contests from {name}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Track contests from {name}
+                    </span>
                   </Label>
                   <Switch
                     id={key}
-                    checked={settings.platformPreferences[key as keyof typeof settings.platformPreferences]}
+                    checked={
+                      settings.platformPreferences[
+                        key as keyof typeof settings.platformPreferences
+                      ]
+                    }
                     onCheckedChange={(value) =>
-                      updatePlatformPreferences(key as keyof typeof settings.platformPreferences, value)
+                      updatePlatformPreferences(
+                        key as keyof typeof settings.platformPreferences,
+                        value
+                      )
                     }
                   />
                 </div>
-                {index < Object.entries(platformNames).length - 1 && <Separator className="mt-4" />}
+                {index < Object.entries(platformNames).length - 1 && (
+                  <Separator className="mt-4" />
+                )}
               </div>
             ))}
           </CardContent>
         </Card>
 
         {/* Timezone */}
-       
 
         {/* Notification Types */}
         <Card>
@@ -164,7 +229,9 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <Label htmlFor="email-notif" className="flex flex-col space-y-1">
                 <span>Email Notifications</span>
-                <span className="text-sm text-muted-foreground">Receive notifications via email</span>
+                <span className="text-sm text-muted-foreground">
+                  Receive notifications via email
+                </span>
               </Label>
               <Switch
                 id="email-notif"
@@ -174,21 +241,30 @@ export default function SettingsPage() {
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <Label htmlFor="browser-notif" className="flex flex-col space-y-1">
+              <Label
+                htmlFor="browser-notif"
+                className="flex flex-col space-y-1"
+              >
                 <span>Browser Notifications</span>
-                <span className="text-sm text-muted-foreground">Show notifications in your browser</span>
+                <span className="text-sm text-muted-foreground">
+                  Show notifications in your browser
+                </span>
               </Label>
               <Switch
                 id="browser-notif"
                 checked={settings.notifications.browser}
-                onCheckedChange={(value) => updateNotifications("browser", value)}
+                onCheckedChange={(value) =>
+                  updateNotifications("browser", value)
+                }
               />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <Label htmlFor="push-notif" className="flex flex-col space-y-1">
                 <span>Push Notifications</span>
-                <span className="text-sm text-muted-foreground">Receive push notifications on mobile</span>
+                <span className="text-sm text-muted-foreground">
+                  Receive push notifications on mobile
+                </span>
               </Label>
               <Switch
                 id="push-notif"
@@ -207,5 +283,5 @@ export default function SettingsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

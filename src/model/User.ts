@@ -17,7 +17,6 @@ export interface User extends Document {
   emailNotifications?: boolean;
   browserNotifications?: boolean;
   pushNotifications?: boolean;
-
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -47,7 +46,7 @@ const UserSchema: Schema<User> = new Schema({
   oneDayBefore: { type: Boolean, default: true },
   emailNotifications: { type: Boolean, default: true },
   browserNotifications: { type: Boolean, default: true },
-  pushNotifications: { type: Boolean, default: true },
+  pushNotifications: { type: Boolean, default: false },
 });
 
 const UserModel =
