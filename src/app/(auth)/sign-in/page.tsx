@@ -167,7 +167,7 @@ const Page = () => {
               <span role="img" aria-label="lock">
                 🔒
               </span>{" "}
-              Passwordless login without captcha
+              Auto Login
             </li>
             <li className="flex items-center gap-2">
               <span role="img" aria-label="attendance">

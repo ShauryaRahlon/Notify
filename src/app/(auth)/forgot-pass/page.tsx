@@ -6,7 +6,7 @@ import * as z from "zod";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormField,

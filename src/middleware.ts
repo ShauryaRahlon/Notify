@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
     if (token && (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up') || url.pathname === '/' || url.pathname.startsWith('/verify'))) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
-    if (!token && (url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/settings') || url.pathname.startsWith('/contests'))) {
+    if (!token && (url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/settings') || url.pathname.startsWith('/contests')) || url.pathname.startsWith('/about')) {
         return NextResponse.redirect(new URL('/sign-in', request.url));
     }
     return NextResponse.next();

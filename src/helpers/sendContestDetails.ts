@@ -17,8 +17,12 @@ interface MailOptions {
 export async function sendContestDetails(contestDetails: Contest[]): Promise<ApiResponse> {
     try {
         await dbConnect();
-        const users = await UserModel.find({ acceptingContest: true });
-        const emails = users.map((user) => user.email);
+        const usersLeetCode = await UserModel.find({ LeetCode: true, emailNotifications: true });
+        const usersCodeForces = await UserModel.find({ CodeForces: true, emailNotifications: true });
+        const usersCodeChef = await UserModel.find({ CodeChef: true, emailNotifications: true });
+        const emails_leetcode = usersLeetCode.map(user => user.email);
+        const emails_codeforces = usersCodeForces.map(user => user.email);
+        const emails_codechef = usersCodeChef.map(user => user.email);
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -27,6 +31,14 @@ export async function sendContestDetails(contestDetails: Contest[]): Promise<Api
             }
         });
         for (const contest of contestDetails) {
+            const emails: string[] = [];
+            if (contest.platform === 'LeetCode') {
+                emails.push(...emails_leetcode);
+            } else if (contest.platform === 'CodeForces') {
+                emails.push(...emails_codeforces);
+            } else if (contest.platform === 'CodeChef') {
+                emails.push(...emails_codechef);
+            }
             const htmlcontent = await render(React.createElement(ContestEmail, { ...contest }));
             const mailOptions: MailOptions = {
                 from: process.env.NODEMAILER_EMAIL,
