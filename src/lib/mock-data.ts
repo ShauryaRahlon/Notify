@@ -79,15 +79,15 @@ export const mockStats: DashboardStats = {
 export const platformColors = {
   leetcode: "bg-orange-500",
   codeforces: "bg-blue-500",
-  atcoder: "bg-gray-700",
+
   codechef: "bg-amber-600",
-  gfg: "bg-green-600",
+ 
 }
 
 export const platformNames = {
   leetcode: "LeetCode",
   codeforces: "Codeforces",
-  atcoder: "AtCoder",
+  
   codechef: "CodeChef",
-  gfg: "GeeksforGeeks",
+
 }

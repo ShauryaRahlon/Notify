@@ -21,16 +21,14 @@ export interface UserSettings {
   emailPreferences: {
     oneHour: boolean
     oneDay: boolean
-    oneWeek: boolean
+    
   }
   platformPreferences: {
     leetcode: boolean
     codeforces: boolean
-    gfg: boolean
-    atcoder: boolean
     codechef: boolean
   }
-  timezone: string
+ ,
   notifications: {
     email: boolean
     browser: boolean

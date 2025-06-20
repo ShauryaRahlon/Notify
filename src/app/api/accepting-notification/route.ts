@@ -17,3 +17,16 @@ export async function POST() {
         return new Response(JSON.stringify({ success: false }), { status: 500 });
     }
 }
+
+export async function GET() {
+    try {
+        await dbConnect();
+        const session = await getServerSession();
+        const User = await UserModel.findOne({ _id: session?.user._id });
+        if (!User) return new Response(JSON.stringify({ success: false }), { status: 400 });
+        return new Response(JSON.stringify({ acceptingContest: User.acceptingContest }), { status: 200 });
+    } catch (error) {
+        console.error("Error fetching notification status:", error);
+        return new Response(JSON.stringify({ success: false }), { status: 500 });
+    }
+}
