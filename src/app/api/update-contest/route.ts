@@ -7,8 +7,6 @@ import { Contest } from '@/model/Contest';
 import ContestModel from '@/model/Contest';
 import dbConnect from '@/lib/dbConnect';
 import { sendContestDetails } from '@/helpers/sendContestDetails';
-import ReminderModel from '@/model/Reminder';
-import { sendReminders } from '@/helpers/sendReminders';
 export async function GET() {
   try {
     await dbConnect();
@@ -30,19 +28,6 @@ export async function GET() {
       }
     }
     console.log('New contests:', newContests);
-    const reminders = await ReminderModel.find();
-    if (reminders.length > 0) {
-      const twoHourFromNow = new Date(Date.now() + 2 * 60 * 60 * 1000);
-      const tosend = reminders.filter((reminder) => {
-        const reminderTime = new Date(reminder.contest.startTime);
-        return reminderTime > twoHourFromNow;
-      })
-      const res = await sendReminders(tosend);
-      if (res.success) {
-        const idstoDelete = tosend.map((reminder) => reminder._id);
-        await ReminderModel.deleteMany({ _id: { $in: idstoDelete } });
-      }
-    }
     if (newContests.length === 0) {
       return NextResponse.json({ success: true, message: "Contest already updated." }, { status: 200 });
     }

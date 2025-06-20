@@ -10,6 +10,9 @@ export interface User extends Document {
   acceptingContest: boolean;
   resetCode?: string;
   resetCodeExpires?: Date;
+  LeetCode?: boolean;
+  CodeForces?: boolean;
+  CodeChef?: boolean;
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -33,6 +36,9 @@ const UserSchema: Schema<User> = new Schema({
   acceptingContest: { type: Boolean, default: false },
   resetCode: { type: String },
   resetCodeExpires: { type: Date },
+  LeetCode: { type: Boolean, default: true },
+  CodeForces: { type: Boolean, default: true },
+  CodeChef: { type: Boolean, default: true },
 });
 
 const UserModel =

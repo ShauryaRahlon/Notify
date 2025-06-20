@@ -2,8 +2,6 @@ import { sendPasswordResetEmail } from "@/helpers/sendPasswordResetEmail";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 
-import Email from "next-auth/providers/email";
-import { redirect } from "next/dist/server/api-utils";
 
 export async function POST(request: Request) {
   await dbConnect();
