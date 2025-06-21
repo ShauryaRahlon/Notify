@@ -1,6 +1,7 @@
 import { sendRemindersOneHour, sendRemindersOneDay } from "@/helpers/sendReminders";
 import dbConnect from "@/lib/dbConnect";
 import ReminderModel from "@/model/Reminder";
+import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
@@ -28,9 +29,9 @@ export async function GET() {
             });
             await sendRemindersOneDay(tosendOneDay);
         }
-        return new Response(JSON.stringify({ success: true, message: "Reminders processed successfully." }), { status: 200 });
+        return new NextResponse(JSON.stringify({ success: true, message: "Reminders processed successfully." }), { status: 200 });
     } catch (error) {
         console.error('Error in GET request:', error);
-        return new Response(JSON.stringify({ success: false, message: "Failed to process request." }), { status: 500 });
+        return new NextResponse(JSON.stringify({ success: false, message: "Failed to process request." }), { status: 500 });
     }
 }
