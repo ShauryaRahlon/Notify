@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, ExternalLink, Bell } from "lucide-react";
-import { platformColors, platformNames } from "@/lib/mock-data";
+import { platformNames } from "@/lib/mock-data";
 import { formatDistanceToNow, format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -51,7 +51,6 @@ async function addReminder(contest: Contest) {
 export function ContestCard({
   contest,
   onSetReminder,
-  onViewDetails,
 }: ContestCardProps) {
   const [reminderSet, setReminderSet] = useState(false);
 

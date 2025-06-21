@@ -12,8 +12,6 @@ export interface User extends Document {
   LeetCode?: boolean;
   CodeForces?: boolean;
   CodeChef?: boolean;
-  oneHourBefore?: boolean;
-  oneDayBefore?: boolean;
   emailNotifications?: boolean;
   browserNotifications?: boolean;
   pushNotifications?: boolean;
@@ -42,8 +40,6 @@ const UserSchema: Schema<User> = new Schema({
   LeetCode: { type: Boolean, default: true },
   CodeForces: { type: Boolean, default: true },
   CodeChef: { type: Boolean, default: true },
-  oneHourBefore: { type: Boolean, default: true },
-  oneDayBefore: { type: Boolean, default: true },
   emailNotifications: { type: Boolean, default: true },
   browserNotifications: { type: Boolean, default: true },
   pushNotifications: { type: Boolean, default: false },

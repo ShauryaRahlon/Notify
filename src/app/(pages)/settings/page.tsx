@@ -9,22 +9,17 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { UserSettings } from "@/lib/types";
 import { platformNames } from "@/lib/mock-data";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from 'sonner';
 import { Bell, Mail, Globe } from "lucide-react";
 import axios from "axios";
 
-async function fetchSettings() {
-  const response = await axios.get("/api/settings");
-  return response.data as UserSettings;
-}
+// async function fetchSettings() {
+//   const response = await axios.get("/api/settings");
+//   return response.data as UserSettings;
+// }
 
 export default function SettingsPage() {
-  const { toast } = useToast();
   const [settings, setSettings] = useState<UserSettings>({
-    emailPreferences: {
-      oneHour: true,
-      oneDay: true,
-    },
     platformPreferences: {
       leetcode: true,
       codeforces: true,
@@ -44,11 +39,7 @@ export default function SettingsPage() {
         setSettings(userSettings.data);
       } catch (error) {
         console.error("Failed to fetch settings:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load settings. Please try again later.",
-          variant: "destructive",
-        });
+        toast.error("Failed to load settings. Please try again later.");
       }
     };
     loadSettings();
@@ -60,40 +51,16 @@ export default function SettingsPage() {
       if (!res.data.success) {
         throw new Error("Failed to save settings");
       }
-      if (res.data.success) {
-        alert("Settings saved successfully!");
-        // Optionally, you can update the local state with the new settings
-        console.log("Settings save response:", res.data);
-        toast({
-          title: "Settings saved",
-          description: "Your preferences have been updated successfully.",
-        });
-      }
+      toast.success("Your preferences have been updated successfully.");
     } catch (error) {
       console.error("Settings save error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to save settings. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("Failed to save settings. Please try again.");
     }
   };
 
-  const updateEmailPreferences = (
-    key: keyof typeof settings.emailPreferences,
-    value: boolean
-  ) => {
-    setSettings((prev) => ({
-      ...prev,
-      emailPreferences: {
-        ...prev.emailPreferences,
-        [key]: value,
-      },
-    }));
-  };
 
   const updatePlatformPreferences = (
-    key: keyof typeof settings.platformPreferences,
+    key: keyof UserSettings["platformPreferences"],
     value: boolean
   ) => {
     setSettings((prev) => ({
@@ -106,7 +73,7 @@ export default function SettingsPage() {
   };
 
   const updateNotifications = (
-    key: keyof typeof settings.notifications,
+    key: keyof UserSettings["notifications"],
     value: boolean
   ) => {
     setSettings((prev) => ({
@@ -127,49 +94,6 @@ export default function SettingsPage() {
             Manage your contest tracking preferences and notifications
           </p>
         </div>
-
-        {/* Email Preferences */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Mail className="h-5 w-5" />
-              <span>Email Reminders</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="one-hour" className="flex flex-col space-y-1">
-                <span>1 Hour Before</span>
-                <span className="text-sm text-muted-foreground">
-                  Get notified 1 hour before contest starts
-                </span>
-              </Label>
-              <Switch
-                id="one-hour"
-                checked={settings.emailPreferences.oneHour}
-                onCheckedChange={(value) =>
-                  updateEmailPreferences("oneHour", value)
-                }
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <Label htmlFor="one-day" className="flex flex-col space-y-1">
-                <span>1 Day Before</span>
-                <span className="text-sm text-muted-foreground">
-                  Get notified 1 day before contest starts
-                </span>
-              </Label>
-              <Switch
-                id="one-day"
-                checked={settings.emailPreferences.oneDay}
-                onCheckedChange={(value) =>
-                  updateEmailPreferences("oneDay", value)
-                }
-              />
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Platform Preferences */}
         <Card>
@@ -193,7 +117,7 @@ export default function SettingsPage() {
                     id={key}
                     checked={
                       settings.platformPreferences[
-                        key as keyof typeof settings.platformPreferences
+                      key as keyof typeof settings.platformPreferences
                       ]
                     }
                     onCheckedChange={(value) =>

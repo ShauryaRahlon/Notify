@@ -126,7 +126,7 @@ const Page = () => {
             </Link>
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            Can't remember your password?{" "}
+            Can not remember your password?{" "}
             <Link
               href="/forgot-pass"
               className="text-pink-500 font-semibold hover:underline"
@@ -144,22 +144,19 @@ const Page = () => {
         >
           <span>Features</span>
           <span
-            className={`transform transition-transform duration-300 ${
-              featuresOpen ? "rotate-90" : "rotate-0"
-            }`}
+            className={`transform transition-transform duration-300 ${featuresOpen ? "rotate-90" : "rotate-0"
+              }`}
             aria-label={featuresOpen ? "Collapse" : "Expand"}
           >
             ▶
           </span>
         </button>
         <div
-          className={`overflow-hidden transition-all duration-500 ${
-            featuresOpen
-              ? "max-h-96 opacity-100 translate-y-0"
-              : "max-h-0 opacity-0 -translate-y-2"
-          } bg-card border-x border border-primary/40 rounded-2xl shadow-md px-6 ${
-            featuresOpen ? "py-4 mt-3" : "py-0 mt-0"
-          }`}
+          className={`overflow-hidden transition-all duration-500 ${featuresOpen
+            ? "max-h-96 opacity-100 translate-y-0"
+            : "max-h-0 opacity-0 -translate-y-2"
+            } bg-card border-x border border-primary/40 rounded-2xl shadow-md px-6 ${featuresOpen ? "py-4 mt-3" : "py-0 mt-0"
+            }`}
           style={{ pointerEvents: featuresOpen ? "auto" : "none" }}
         >
           <ul className="space-y-2 text-base mb-6">

@@ -19,10 +19,6 @@ export async function POST(req: Request) {
       return new Response(JSON.stringify({ success: false }), { status: 400 });
 
     // Update user settings from body
-    if (body.emailPreferences) {
-      User.oneHourBefore = body.emailPreferences.oneHour;
-      User.oneDayBefore = body.emailPreferences.oneDay;
-    }
     if (body.platformPreferences) {
       User.LeetCode = body.platformPreferences.leetcode;
       User.CodeForces = body.platformPreferences.codeforces;
@@ -57,10 +53,6 @@ export async function GET() {
     return new Response(
       JSON.stringify({
         success: true,
-        emailPreferences: {
-          oneHour: User.oneHourBefore,
-          oneDay: User.oneDayBefore,
-        },
         platformPreferences: {
           leetcode: User.LeetCode,
           codeforces: User.CodeForces,

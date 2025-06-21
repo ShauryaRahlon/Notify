@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FriendStalker } from "@/components/friend-stalker";
-import { Calendar, Clock, Bell, Star, TrendingUp, LogOut } from "lucide-react";
+import { Calendar, Bell, TrendingUp, LogOut } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import QuickSection from "@/components/quick-section";

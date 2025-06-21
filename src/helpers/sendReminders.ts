@@ -31,20 +31,18 @@ export async function sendRemindersOneHour(tosend: Reminder[]): Promise<ApiRespo
                 console.error(`❌ User not found for reminder with ID: ${reminder._id}`);
                 continue;
             }
-            if (user.oneHourBefore) {
-                const contest = reminder.contest;
-                const htmlcontent = await render(React.createElement(ReminderEmail, { code: contest.code, name: contest.name, platform: contest.platform, startTime: contest.startTime, endTime: contest.endTime, duration: contest.duration, url: contest.url }));
-                const mailOptions: MailOptions = {
-                    from: process.env.NODEMAILER_EMAIL,
-                    to: user.email,
-                    subject: 'Contest Update',
-                    html: htmlcontent
-                };
-                try {
-                    await transporter.sendMail(mailOptions);
-                } catch (err) {
-                    console.error(`❌ Failed to send mail for contest "${reminder.contest.name}":`, err);
-                }
+            const contest = reminder.contest;
+            const htmlcontent = await render(React.createElement(ReminderEmail, { code: contest.code, name: contest.name, platform: contest.platform, startTime: contest.startTime, endTime: contest.endTime, duration: contest.duration, url: contest.url }));
+            const mailOptions: MailOptions = {
+                from: process.env.NODEMAILER_EMAIL,
+                to: user.email,
+                subject: 'Contest Update',
+                html: htmlcontent
+            };
+            try {
+                await transporter.sendMail(mailOptions);
+            } catch (err) {
+                console.error(`❌ Failed to send mail for contest "${reminder.contest.name}":`, err);
             }
         }
         return {
@@ -76,21 +74,20 @@ export async function sendRemindersOneDay(tosendOneDay: Reminder[]): Promise<Api
                 console.error(`❌ User not found for reminder with ID: ${reminder._id}`);
                 continue;
             }
-            if (user.oneDayBefore) {
-                const contest = reminder.contest;
-                const htmlcontent = await render(React.createElement(ReminderEmail, { code: contest.code, name: contest.name, platform: contest.platform, startTime: contest.startTime, endTime: contest.endTime, duration: contest.duration, url: contest.url }));
-                const mailOptions: MailOptions = {
-                    from: process.env.NODEMAILER_EMAIL,
-                    to: user.email,
-                    subject: 'Contest Update',
-                    html: htmlcontent
-                };
-                try {
-                    await transporter.sendMail(mailOptions);
-                } catch (err) {
-                    console.error(`❌ Failed to send mail for contest "${reminder.contest.name}":`, err);
-                }
+            const contest = reminder.contest;
+            const htmlcontent = await render(React.createElement(ReminderEmail, { code: contest.code, name: contest.name, platform: contest.platform, startTime: contest.startTime, endTime: contest.endTime, duration: contest.duration, url: contest.url }));
+            const mailOptions: MailOptions = {
+                from: process.env.NODEMAILER_EMAIL,
+                to: user.email,
+                subject: 'Contest Update',
+                html: htmlcontent
+            };
+            try {
+                await transporter.sendMail(mailOptions);
+            } catch (err) {
+                console.error(`❌ Failed to send mail for contest "${reminder.contest.name}":`, err);
             }
+
         }
         return {
             success: true,

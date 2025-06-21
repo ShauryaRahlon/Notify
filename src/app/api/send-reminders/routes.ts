@@ -26,11 +26,7 @@ export async function GET() {
                 const reminderTime = new Date(reminder.contest.startTime);
                 return reminderTime >= twentyThreeHrThirtyMinFromNow && reminderTime <= twentyFourHrFromNow;
             });
-            const resOneDay = await sendRemindersOneDay(tosendOneDay);
-            if (resOneDay.success) {
-                const idstoDelete = tosendOneDay.map((reminder) => reminder._id);
-                await ReminderModel.deleteMany({ _id: { $in: idstoDelete } });
-            }
+            await sendRemindersOneDay(tosendOneDay);
         }
         return new Response(JSON.stringify({ success: true, message: "Reminders processed successfully." }), { status: 200 });
     } catch (error) {

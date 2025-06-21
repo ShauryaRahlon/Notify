@@ -11,7 +11,6 @@ import { verifySchema } from "@/schemas/verifySchema";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import {
-  FormControl,
   FormField,
   FormItem,
   FormLabel,

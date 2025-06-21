@@ -50,6 +50,7 @@ const Page = () => {
         toast.error(result.message || "Failed to send reset email.");
       }
     } catch (error) {
+      console.error("Error sending reset email:", error);
       toast.error("Something went wrong. Please try again later.");
     }
     setSubmitting(false);
@@ -63,7 +64,7 @@ const Page = () => {
             Forgot your password?
           </h1>
           <p className="mb-4 text-lg text-muted-foreground font-semibold">
-            Enter your email and we'll send you instructions to reset your
+            Enter your email and we will send you instructions to reset your
             password.
           </p>
         </div>
