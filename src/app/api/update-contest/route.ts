@@ -10,6 +10,7 @@ import { sendContestDetails } from '@/helpers/sendContestDetails';
 export async function GET() {
   try {
     setTimeout(async () => {
+      console.log("✅ Contest update started");
       await dbConnect();
       const [leetCode, codeChef, codeForces]: [Contest[], Contest[], Contest[]] = await Promise.all([
         getLeetcode(),
