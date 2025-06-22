@@ -25,6 +25,7 @@ export function FriendStalker() {
   const [userData, setUserData] = useState<any>(null);
   const [showAllSubmissions, setShowAllSubmissions] = useState(false);
   const [platform, setPlatform] = useState("leetcode");
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
 
   useEffect(() => {
     if (debouncedValue.trim()) {
@@ -47,6 +48,8 @@ export function FriendStalker() {
       platform
     );
     try {
+      console.log("Fetching user data...");
+      setAlreadyAdded(false);
       let response: any = null;
       if (platform === "leetcode") {
         response = await axios.get(
@@ -71,9 +74,23 @@ export function FriendStalker() {
         throw new Error("No response received from server");
       }
       const data = response.data;
+      console.log("User data received:", data);
       if (data.message === "user does not exist") {
         throw new Error(data.message || "Failed to fetch user data");
       }
+      // Check if the user is already added
+      const checkResponse = await axios.post("/api/check-friend", {
+        username: debouncedValue,
+        f_platform: platform,
+      });
+      console.log("Check friend response:", checkResponse.data);
+      if (checkResponse.data.message === "Friend already exists.") {
+        setAlreadyAdded(true);
+      }
+      else if (checkResponse.data.message === "Friend does not exist.") {
+        setAlreadyAdded(false);
+      }
+      console.log(alreadyAdded);
       setUserData(data);
       toast.success(`Successfully retrieved ${debouncedValue}'s profile`);
     } catch (error) {
@@ -110,7 +127,13 @@ export function FriendStalker() {
         f_platform: platform,
       });
       if (res.data.success) {
-        toast.success(`Successfully added ${username} as a friend!`);
+        if (res.data.message === "Friend already exists.") {
+          toast.error("This friend already exists in your list.");
+        } else {
+          toast.success("Friend added successfully!");
+          // Optionally, you can update the UI or state here
+          setAlreadyAdded(true);
+        }
       }
     } catch (error) {
       console.error("Error adding friend:", error);
@@ -120,7 +143,28 @@ export function FriendStalker() {
       setLoading(false);
     }
   };
-
+  const removeFriend = async (username: string, platform: string) => {
+    // Call API to remove friend
+    try {
+      setLoading(true);
+      const res = await axios.post("/api/remove-friend", {
+        username,
+        f_platform: platform,
+      });
+      if (res.data.success) {
+        toast.success("Friend removed successfully!");
+        setAlreadyAdded(false);
+        // Optionally, you can update the UI or state here
+      } else {
+        toast.error("Failed to remove friend. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Error removing friend:", error);
+      toast.error("Failed to remove friend. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="space-y-6">
       <Card className="shadow-xl border-2 border-accent/30 ">
@@ -265,10 +309,12 @@ export function FriendStalker() {
                   <div className="flex justify-end">
                     <StyledButton
                       onClick={() =>
-                        addFriend(username, platform)
+                        alreadyAdded
+                          ? removeFriend(userData.username, platform)
+                          : addFriend(userData.username, platform)
                       }
                     >
-                      Add Friend
+                      {alreadyAdded ? "Remove Friend" : "Add Friend"}
                     </StyledButton>
                   </div>
                 </CardContent>

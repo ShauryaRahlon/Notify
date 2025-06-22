@@ -17,13 +17,11 @@ export async function POST(request: Request) {
             user.friends = [];
         }
         // Check if the friend already exists
-        const friendExists = user.friends.some(friend => friend.username === username && friend.f_platform === f_platform);
+        const friendExists = user.friends.some(friend => (friend.username === username || friend.username === username.toLowerCase()) && friend.f_platform === f_platform);
         if (friendExists) {
             return NextResponse.json({ success: true, message: "Friend already exists." }, { status: 200 });
         }
-        user.friends.push({ username, f_platform });
-        await user.save();
-        return NextResponse.json({ success: true, message: "Friend added successfully." }, { status: 200 });
+        return NextResponse.json({ success: true, message: "Friend does not exist." }, { status: 200 });
     } catch (error) {
         console.error("Error adding friend:", error);
         return NextResponse.json({ success: false, message: "Failed to add friend." }, { status: 500 });
