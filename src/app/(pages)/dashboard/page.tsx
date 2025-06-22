@@ -2,12 +2,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FriendStalker } from "@/components/friend-stalker";
-import { Calendar, Bell, TrendingUp, LogOut } from "lucide-react";
+import { Calendar, Bell, TrendingUp} from "lucide-react";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
+
 import QuickSection from "@/components/quick-section";
 import FeaturedContests from "@/components/featured-contests";
-import { signOut } from "next-auth/react";
+
 import ScrollVelocity from "@/components/ui/ScrollVelocity";
 import {
   Dialog,
@@ -22,19 +22,9 @@ import {
 export default function Dashboard() {
   const [logoutOpen, setLogoutOpen] = React.useState(false);
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-8 space-y-10">
+    <div className="container mx-auto px-2 sm:px-4 py-20 space-y-10">
       {/* Theme Toggle & Logout */}
-      <div className="flex flex-col sm:flex-row justify-end items-center gap-4">
-        <ThemeToggle />
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setLogoutOpen(true)}
-          title="Logout"
-        >
-          <LogOut className="h-5 w-5" />
-        </Button>
-      </div>
+      
       <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
@@ -47,20 +37,12 @@ export default function Dashboard() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button
-              variant="destructive"
-              onClick={() => {
-                setLogoutOpen(false);
-                signOut({ callbackUrl: "/sign-in" });
-              }}
-            >
-              Logout
-            </Button>
+            
           </DialogFooter>
         </DialogContent>
       </Dialog>
       {/* Hero Section */}
-      <section className="text-center space-y-6 py-12 bg-gradient-to-br from-accent/10 to-background rounded-xl shadow-md">
+      <section className="text-center space-y-6 py-12 ">
         <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-300 dark:via-purple-300 dark:to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
           Track, Compete, Win.
         </h1>

@@ -1,4 +1,9 @@
+"use client"; 
 import { FloatingNav } from "@/components/ui/floating-navbar";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 import {
   IconHome,
   IconSettings,
@@ -36,7 +41,23 @@ export default function PagesLayout({
 }) {
   return (
     <>
-      <FloatingNav navItems={navItems} />
+      <FloatingNav
+        navItems={navItems}
+        rightItems={
+          <>
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Log out"
+              onClick={() => signOut({ callbackUrl: "/sign-in" })}
+              className=" h-5 w-5"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </>
+        }
+      />
       {children}
     </>
   );

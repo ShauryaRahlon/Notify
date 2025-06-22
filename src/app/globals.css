@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -139,4 +140,23 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
+}
+
+
+
+/* 1. Define your theme variables and keyframes */
+@theme {
+  --animate-shine: shine 5s linear infinite;
+
+  @keyframes shine {
+    0%   { background-position: 100%; }
+    100% { background-position: -100%; }
+  }
+}
+
+/* 2. Add a custom utility for the animation */
+@layer utilities {
+  .animate-shine {
+    animation: var(--animate-shine);
+  }
 }

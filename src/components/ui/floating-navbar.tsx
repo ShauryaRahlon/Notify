@@ -8,10 +8,10 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 
-
 export const FloatingNav = ({
   navItems,
   className,
+  rightItems,
 }: {
   navItems: {
     name: string;
@@ -19,6 +19,7 @@ export const FloatingNav = ({
     icon?: React.ReactElement;
   }[];
   className?: string;
+  rightItems?: React.ReactNode;
 }) => {
   const { scrollYProgress } = useScroll();
 
@@ -72,7 +73,9 @@ export const FloatingNav = ({
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </a>
         ))}
-        
+        {rightItems && (
+          <div className="flex items-center space-x-4 ">{rightItems}</div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
