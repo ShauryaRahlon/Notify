@@ -1,22 +1,84 @@
 "use client";
 
-import axios from "axios";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@/components/ui/avatar";
-import {
-  Search,
-  Users,
-} from "lucide-react";
+import { Search, Users } from "lucide-react";
 import StyledButton from "@/components/ui/styled-botton";
 import { toast } from "sonner";
 import { useDebounceValue } from "usehooks-ts";
+
+// Mock response based on the new API
+// const MOCK_RESPONSE = {
+//   status: "success",
+//   message: "retrieved",
+//   username: "example_user",
+//   githubUrl: "https://github.com/example",
+//   twitterUrl: "https://twitter.com/example",
+//   linkedinUrl: "https://linkedin.com/in/example",
+//   contributions: {
+//     points: 100,
+//     questionCount: 5,
+//     testcaseCount: 10,
+//   },
+//   profile: {
+//     realName: "Example User",
+//     userAvatar: "https://assets.leetcode.com/avatar.jpg",
+//     birthday: "2000-01-01",
+//     ranking: 10000,
+//     reputation: 100,
+//     websites: ["https://example.com"],
+//     countryName: "United States",
+//     company: "Example Corp",
+//     school: "Example University",
+//     skillTags: ["Python", "Algorithms"],
+//     aboutMe: "LeetCode enthusiast",
+//     starRating: 4.5,
+//   },
+//   badges: [
+//     {
+//       name: "Badge 1",
+//       icon: "https://assets.leetcode.com/badge1.png",
+//     },
+//     {
+//       name: "Badge 2",
+//       icon: "https://assets.leetcode.com/badge2.png",
+//     },
+//   ],
+//   upcomingBadges: [],
+//   activeBadge: {},
+//   submitStats: {
+//     acSubmissionNum: [
+//       { difficulty: "Easy", count: 50, submissions: 60 },
+//       { difficulty: "Medium", count: 30, submissions: 40 },
+//       { difficulty: "Hard", count: 10, submissions: 15 },
+//     ],
+//   },
+//   submissionCalendar: { "1719000000": 2 },
+//   recentSubmissions: [
+//     {
+//       title: "Two Sum",
+//       titleSlug: "two-sum",
+//       statusDisplay: "Accepted",
+//       lang: "Python3",
+//       timestamp: "1719000000",
+//     },
+//     {
+//       title: "Add Two Numbers",
+//       titleSlug: "add-two-numbers",
+//       statusDisplay: "Wrong Answer",
+//       lang: "C++",
+//       timestamp: "1718990000",
+//     },
+//   ],
+// };
+
 export function FriendStalker() {
   const [username, setUsername] = useState("");
-  const [debouncedValue] = useDebounceValue(username, 500);
+  const [debouncedValue] = useDebounceValue(username, 1000);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [showAllSubmissions, setShowAllSubmissions] = useState(false);
@@ -28,6 +90,7 @@ export function FriendStalker() {
       setUserData(null);
     }
   }, [debouncedValue]);
+
   // Handle search with debounced value
   const handleSearch = async () => {
     if (!debouncedValue.trim()) {
@@ -36,23 +99,20 @@ export function FriendStalker() {
     }
     setLoading(true);
     try {
-      const response = await axios.get(
-        `/api/search-username?username=${debouncedValue}`
+      const response = await fetch(
+        `https://leetcode-stats.tashif.codes/${debouncedValue}/profile`
       );
-      console.log(response);
-      if (response.data.message.matchedUser === null) {
-        toast.error(
-          response.data.message.error ||
-          "User not found. Please check the username and try again."
-        );
-        setUserData(null);
-        return;
+      const data = await response.json();
+      if (data.message === "user does not exist") {
+        // toast.error(`User ${debouncedValue} not found`);
+        throw new Error(data.message || "Failed to fetch user data");
       }
-      setUserData(response.data.message);
-      toast.success(`Successfully retrieved ${username}'s profile`);
+      setUserData(data);
+      toast.success(`Successfully retrieved ${debouncedValue}'s profile`);
+      // toast.success(`Successfully retrieved ${debouncedValue}'s profile`);
     } catch (error) {
       toast.error(
-        `Failed to fetch data for ${username}. Please check the username and try again.`
+        `Failed to fetch data for ${debouncedValue}. Please check the username and try again.`
       );
       setUserData(null);
     } finally {
@@ -113,7 +173,7 @@ export function FriendStalker() {
                 <CardContent className="flex flex-col md:flex-row items-center gap-8 pt-8">
                   <Avatar className="h-24 w-24 ring-4 ring-accent">
                     <img
-                      src={userData.matchedUser.profile.userAvatar}
+                      src={userData.profile.userAvatar}
                       alt="avatar"
                       className="rounded-full"
                     />
@@ -121,40 +181,89 @@ export function FriendStalker() {
                   <div className="flex-1 space-y-2 text-center md:text-left">
                     <div className="flex flex-col md:flex-row items-center gap-3 justify-center md:justify-start">
                       <h2 className="text-3xl font-bold text-accent-foreground">
-                        {userData.matchedUser.profile.realName ||
-                          userData.matchedUser.username}
+                        {userData.profile.realName || userData.username}
                       </h2>
                       <Badge
                         variant="secondary"
                         className="text-base px-3 py-1"
                       >
-                        {userData.matchedUser.username}
+                        {userData.username}
                       </Badge>
                     </div>
                     <div className="flex flex-col md:flex-row gap-2 md:gap-6 flex-wrap mt-2 items-center md:items-start justify-center md:justify-start">
                       <span className="text-base text-muted-foreground">
                         Ranking:{" "}
-                        <b>
-                          #
-                          {userData.matchedUser.profile.ranking?.toLocaleString()}
-                        </b>
+                        <b>#{userData.profile.ranking?.toLocaleString()}</b>
                       </span>
                       <span className="text-base text-muted-foreground">
-                        Reputation:{" "}
-                        <b>{userData.matchedUser.profile.reputation}</b>
+                        Reputation: <b>{userData.profile.reputation}</b>
                       </span>
                       <span className="text-base text-muted-foreground">
-                        Star Rating:{" "}
-                        <b>{userData.matchedUser.profile.starRating} ⭐</b>
+                        Star Rating: <b>{userData.profile.starRating} ⭐</b>
                       </span>
+                      <span className="text-base text-muted-foreground">
+                        Country: <b>{userData.profile.countryName}</b>
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {userData.profile.skillTags.map(
+                        (tag: string, i: number) => (
+                          <Badge key={i} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        )
+                      )}
+                    </div>
+                    <div className="mt-2 text-sm text-muted-foreground">
+                      {userData.profile.aboutMe}
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      {userData.githubUrl && (
+                        <a
+                          href={userData.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline text-xs"
+                        >
+                          GitHub
+                        </a>
+                      )}
+                      {userData.twitterUrl && (
+                        <a
+                          href={userData.twitterUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline text-xs"
+                        >
+                          Twitter
+                        </a>
+                      )}
+                      {userData.linkedinUrl && (
+                        <a
+                          href={userData.linkedinUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline text-xs"
+                        >
+                          LinkedIn
+                        </a>
+                      )}
                     </div>
                   </div>
                   {/* Add Friend Button */}
                   <div className="flex justify-end">
                     <StyledButton
                       onClick={() =>
-                        toast.success(
-                          `You sent a friend request to ${userData.matchedUser.username}`
+                        toast(
+                          `This feature is not implemented yet. Stay tuned!`,
+                          {
+                            style: {
+                              background: "#f5f5f5",
+                              color: "#222",
+                              border: "1px solid #e0e0e0",
+                            },
+                            icon: "ℹ️",
+                          }
                         )
                       }
                     >
@@ -171,31 +280,30 @@ export function FriendStalker() {
                     <CardTitle>Accepted Submissions</CardTitle>
                   </CardHeader>
                   <CardContent className="grid grid-cols-2 gap-4 pt-4">
-                    {userData.matchedUser.submitStats.acSubmissionNum.map(
-                      (s: any) => (
-                        <div
-                          key={s.difficulty}
-                          className="flex flex-col items-center bg-background/80 rounded-lg p-3 shadow-sm w-full"
-                        >
-                          <span
-                            className={`text-lg font-bold text-accent-foreground ${s.difficulty === "Easy"
+                    {userData.submitStats.acSubmissionNum.map((s: any) => (
+                      <div
+                        key={s.difficulty}
+                        className="flex flex-col items-center bg-background/80 rounded-lg p-3 shadow-sm w-full"
+                      >
+                        <span
+                          className={`text-lg font-bold text-accent-foreground ${
+                            s.difficulty === "Easy"
                               ? "text-green-500"
                               : s.difficulty === "Medium"
                                 ? "text-yellow-500"
                                 : "text-red-500"
-                              }`}
-                          >
-                            {s.difficulty}
-                          </span>
-                          <span className="text-2xl  text-foreground">
-                            {s.count}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            ({s.submissions} submissions)
-                          </span>
-                        </div>
-                      )
-                    )}
+                          }`}
+                        >
+                          {s.difficulty}
+                        </span>
+                        <span className="text-2xl  text-foreground">
+                          {s.count}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          ({s.submissions} submissions)
+                        </span>
+                      </div>
+                    ))}
                   </CardContent>
                 </Card>
 
@@ -204,12 +312,12 @@ export function FriendStalker() {
                     <CardTitle className="text-center">Badges</CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-6 pt-4 justify-center ">
-                    {userData.matchedUser.badges.length === 0 && (
+                    {userData.badges.length === 0 && (
                       <span className="text-muted-foreground">
                         No badges yet
                       </span>
                     )}
-                    {userData.matchedUser.badges
+                    {userData.badges
                       .slice(0, 3)
                       .map((badge: any, i: number) => (
                         <div key={i} className="flex flex-col items-center">
@@ -252,8 +360,8 @@ export function FriendStalker() {
                         </tr>
                       </thead>
                       <tbody>
-                        {!userData.recentSubmissionList ||
-                          userData.recentSubmissionList.length === 0 ? (
+                        {!userData.recentSubmissions ||
+                        userData.recentSubmissions.length === 0 ? (
                           <tr className="table-row">
                             <td
                               colSpan={4}
@@ -263,10 +371,10 @@ export function FriendStalker() {
                             </td>
                           </tr>
                         ) : (
-                          (userData.recentSubmissionList.length <= 6 ||
-                            showAllSubmissions
-                            ? userData.recentSubmissionList
-                            : userData.recentSubmissionList.slice(0, 6)
+                          (userData.recentSubmissions.length <= 6 ||
+                          showAllSubmissions
+                            ? userData.recentSubmissions
+                            : userData.recentSubmissions.slice(0, 6)
                           ).map((sub: any, i: number) => (
                             <tr
                               key={i}
@@ -284,9 +392,7 @@ export function FriendStalker() {
                               </td>
                               <td className="py-2 pr-4 table-cell">
                                 <span
-                                  className={`px-2 py-1 rounded ${statusColor(
-                                    sub.statusDisplay
-                                  )} font-semibold`}
+                                  className={`px-2 py-1 rounded ${statusColor(sub.statusDisplay)} font-semibold`}
                                 >
                                   {sub.statusDisplay}
                                 </span>
@@ -302,8 +408,8 @@ export function FriendStalker() {
                             </tr>
                           ))
                         )}
-                        {userData.recentSubmissionList &&
-                          userData.recentSubmissionList.length > 6 && (
+                        {userData.recentSubmissions &&
+                          userData.recentSubmissions.length > 6 && (
                             <tr className="table-row">
                               <td
                                 colSpan={4}
@@ -329,9 +435,9 @@ export function FriendStalker() {
                     </table>
                     {/* Mobile card view */}
                     <div className="md:hidden flex flex-col gap-4 mt-4">
-                      {userData.recentSubmissionList &&
-                        userData.recentSubmissionList.length > 0 ? (
-                        userData.recentSubmissionList.map(
+                      {userData.recentSubmissions &&
+                      userData.recentSubmissions.length > 0 ? (
+                        userData.recentSubmissions.map(
                           (sub: any, i: number) => (
                             <div
                               key={i}
@@ -347,9 +453,7 @@ export function FriendStalker() {
                                   {sub.title}
                                 </a>
                                 <span
-                                  className={`px-2 py-1 rounded ${statusColor(
-                                    sub.statusDisplay
-                                  )} font-semibold text-xs`}
+                                  className={`px-2 py-1 rounded ${statusColor(sub.statusDisplay)} font-semibold text-xs`}
                                 >
                                   {sub.statusDisplay}
                                 </span>
@@ -377,8 +481,6 @@ export function FriendStalker() {
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Badges */}
             </div>
           )}
 

@@ -91,12 +91,12 @@ export default function Page() {
         </div>
       </main>
       {/* Footer always at bottom, consistent style, animated heart */}
-      <footer className="relative z-10 text-center text-xs sm:text-sm py-4 text-muted-foreground w-full bg-black/10 backdrop-blur-md mt-auto flex flex-col items-center gap-1">
+      <footer className="relative z-10 text-center text-s sm:text-sm py-4 text-muted-foreground w-full bg-black/10 backdrop-blur-md mt-auto flex flex-col items-center justify-center gap-1">
         Made with{" "}
-        <span className="text-[#fa9f2f] animate-pulse inline-block">♥</span> by
-        <span className="font-semibold text-white/90"> Shaurya Rahlon</span>,
-        <span className="font-semibold text-white/90"> Vansh Arora</span>, and
-        <span className="font-semibold text-white/90"> Himanshu Singh</span>
+        <span className="text-[#fa9f2f] animate-pulse inline-block">♥</span> by{" "}
+        <span className="font-semibold text-white/90">
+          Vansh Arora, Himanshu Singh and Shaurya Rahlon
+        </span>
       </footer>
     </div>
   );
