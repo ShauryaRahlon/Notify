@@ -281,6 +281,6 @@ _Built with 💻 by [Vansh](https://github.com/vansh1293), [Himanshu](https://gi
 
 ## 🏃‍♂️ **Try It Now!**
 
-**[🚀 Live Demo](https://your-deployment-url.com)** | **[📱 Install PWA](https://your-deployment-url.com)**
+**[🚀 Live Demo](https://notify-snowy.vercel.app/)** | **[📱 Install PWA](https://notify-snowy.vercel.app/sign-in)**
 
 _Available on all devices - just visit the link and click "Add to Home Screen"_
