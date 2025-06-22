@@ -1,5 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+interface friend {
+  username: string;
+  f_platform: string;
+}
 export interface User extends Document {
   username: string;
   password: string;
@@ -15,6 +19,7 @@ export interface User extends Document {
   emailNotifications?: boolean;
   browserNotifications?: boolean;
   pushNotifications?: boolean;
+  friends?: friend[];
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -43,6 +48,14 @@ const UserSchema: Schema<User> = new Schema({
   emailNotifications: { type: Boolean, default: true },
   browserNotifications: { type: Boolean, default: true },
   pushNotifications: { type: Boolean, default: false },
+  friends: {
+    type: [
+      {
+        username: { type: String },
+        f_platform: { type: String },
+      }
+    ],
+  },
 });
 
 const UserModel =

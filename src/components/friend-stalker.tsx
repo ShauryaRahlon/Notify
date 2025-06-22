@@ -101,6 +101,26 @@ export function FriendStalker() {
     }
   };
 
+  const addFriend = async (username: string, platform: string) => {
+    // Call API to add friend
+    try {
+      setLoading(true);
+      const res = await axios.post("/api/add-friend", {
+        username,
+        f_platform: platform,
+      });
+      if (res.data.success) {
+        toast.success(`Successfully added ${username} as a friend!`);
+      }
+    } catch (error) {
+      console.error("Error adding friend:", error);
+      toast.error("Failed to add friend. Please try again later.");
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <Card className="shadow-xl border-2 border-accent/30 ">
@@ -245,17 +265,7 @@ export function FriendStalker() {
                   <div className="flex justify-end">
                     <StyledButton
                       onClick={() =>
-                        toast(
-                          `This feature is not implemented yet. Stay tuned!`,
-                          {
-                            style: {
-                              background: "#f5f5f5",
-                              color: "#222",
-                              border: "1px solid #e0e0e0",
-                            },
-                            icon: "ℹ️",
-                          }
-                        )
+                        addFriend(username, platform)
                       }
                     >
                       Add Friend
@@ -277,13 +287,12 @@ export function FriendStalker() {
                         className="flex flex-col items-center bg-background/80 rounded-lg p-3 shadow-sm w-full"
                       >
                         <span
-                          className={`text-lg font-bold text-accent-foreground ${
-                            s.difficulty === "Easy"
-                              ? "text-green-500"
-                              : s.difficulty === "Medium"
-                                ? "text-yellow-500"
-                                : "text-red-500"
-                          }`}
+                          className={`text-lg font-bold text-accent-foreground ${s.difficulty === "Easy"
+                            ? "text-green-500"
+                            : s.difficulty === "Medium"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                            }`}
                         >
                           {s.difficulty}
                         </span>
@@ -352,7 +361,7 @@ export function FriendStalker() {
                       </thead>
                       <tbody>
                         {!userData.recentSubmissions ||
-                        userData.recentSubmissions.length === 0 ? (
+                          userData.recentSubmissions.length === 0 ? (
                           <tr className="table-row">
                             <td
                               colSpan={4}
@@ -363,7 +372,7 @@ export function FriendStalker() {
                           </tr>
                         ) : (
                           (userData.recentSubmissions.length <= 6 ||
-                          showAllSubmissions
+                            showAllSubmissions
                             ? userData.recentSubmissions
                             : userData.recentSubmissions.slice(0, 6)
                           ).map((sub: any, i: number) => (
@@ -427,7 +436,7 @@ export function FriendStalker() {
                     {/* Mobile card view */}
                     <div className="md:hidden flex flex-col gap-4 mt-4">
                       {userData.recentSubmissions &&
-                      userData.recentSubmissions.length > 0 ? (
+                        userData.recentSubmissions.length > 0 ? (
                         userData.recentSubmissions.map(
                           (sub: any, i: number) => (
                             <div
