@@ -21,6 +21,16 @@ export async function GET() {
       currentContest.map((contest) => `${contest.code}-${contest.platform}`)
     );
     const newContests = [];
+    const sampleContest: Contest = {
+      code: "LC123",
+      platform: "LeetCode",
+      name: "LeetCode Weekly Contest 401",
+      startTime: new Date("2025-06-23T14:30:00.000Z"),
+      endTime: new Date("2025-06-23T16:30:00.000Z"),
+      duration: 120, // in minutes
+      url: "https://leetcode.com/contest/weekly-contest-401/"
+    };
+    newContests.push(sampleContest);
     for (const contest of allContest) {
       const key = `${contest.code}-${contest.platform}`;
       if (!existingSet.has(key)) {
@@ -33,6 +43,7 @@ export async function GET() {
     }
     const res = await sendContestDetails(newContests);
     if (!res.success) {
+      console.error('Failed to send contest details:', res.message);
       return NextResponse.json({ success: false, message: "Failed to send contest details." }, { status: 500 });
     }
     await ContestModel.deleteMany();
