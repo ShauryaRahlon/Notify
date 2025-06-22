@@ -129,8 +129,7 @@ yarn install
 
 ```bash
 # Create .env.local file
-MONGODB_URI=your_mongodb_connection_string
-NEXT_PUBLIC_BASE_URL=your_deployment_url
+check env.sample file for the same
 # Add other environment variables
 ```
 
