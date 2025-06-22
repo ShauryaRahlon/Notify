@@ -16,6 +16,7 @@ interface MailOptions {
 }
 export async function sendContestDetails(contestDetails: Contest[]): Promise<ApiResponse> {
     try {
+        console.log("📧 Sending contest details...");
         await dbConnect();
         const usersLeetCode = await UserModel.find({ LeetCode: true, emailNotifications: true });
         const usersCodeForces = await UserModel.find({ CodeForces: true, emailNotifications: true });
