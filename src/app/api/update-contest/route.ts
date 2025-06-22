@@ -16,11 +16,11 @@ export async function GET() {
       getCodeforces(),
     ]);
     const currentContest = await ContestModel.find();
-    let allContest = [...leetCode, ...codeChef, ...codeForces];
+    const allContest = [...leetCode, ...codeChef, ...codeForces];
     const existingSet = new Set(
       currentContest.map((contest) => `${contest.code}-${contest.platform}`)
     );
-    let newContests = [];
+    const newContests = [];
     for (const contest of allContest) {
       const key = `${contest.code}-${contest.platform}`;
       if (!existingSet.has(key)) {

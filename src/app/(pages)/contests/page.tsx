@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 export default function ContestsPage() {
   const [contests, setContests] = useState<Contest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +37,7 @@ export default function ContestsPage() {
 
         setContests(data.message);
       } catch (e) {
+        console.error("Error fetching contests:", e);
         setContests([]);
       } finally {
         setLoading(false);
@@ -47,7 +47,7 @@ export default function ContestsPage() {
   }, []);
 
   const filteredAndSortedContests = useMemo(() => {
-    let filtered = contests.filter((contest) => {
+    const filtered = contests.filter((contest) => {
       const matchesSearch =
         contest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         contest.platform?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -73,7 +73,7 @@ export default function ContestsPage() {
       }
     });
     return filtered;
-  }, [contests, searchQuery, selectedPlatforms, selectedDifficulty, sortBy]);
+  }, [contests, searchQuery, selectedPlatforms, sortBy]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -184,7 +184,7 @@ export default function ContestsPage() {
       </div>
       {/* Contest Detail Modal */}
       <ContestDetailModal
-        contest={selectedContest as any}
+        contest={selectedContest as Contest}
         isOpen={!!selectedContest}
         onClose={() => setSelectedContest(null)}
       />

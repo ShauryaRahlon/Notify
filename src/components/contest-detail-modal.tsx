@@ -1,11 +1,10 @@
 "use client"
 
-import type { Contest } from "@/lib/types"
+import { Contest } from "@/model/Contest"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Clock, Users, ExternalLink, Bell, Calendar, Trophy } from "lucide-react"
+import { Clock, ExternalLink, Bell, Calendar } from "lucide-react"
 import { platformNames, platformColors } from "@/lib/mock-data"
 import { format } from "date-fns"
 import { useState, useEffect } from "react"
@@ -71,10 +70,10 @@ export function ContestDetailModal({ contest, isOpen, onClose }: ContestDetailMo
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center space-x-2 mb-2">
-            <div className={`w-3 h-3 rounded-full ${platformColors[contest.platform]}`} />
-            <span className="text-sm font-medium text-muted-foreground">{platformNames[contest.platform]}</span>
+            <div className={`w-3 h-3 rounded-full ${platformColors[contest.platform as keyof typeof platformColors]}`} />
+            <span className="text-sm font-medium text-muted-foreground">{platformNames[contest.platform as keyof typeof platformNames]}</span>
           </div>
-          <DialogTitle className="text-2xl">{contest.title}</DialogTitle>
+          <DialogTitle className="text-2xl">{contest.name}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -97,40 +96,13 @@ export function ContestDetailModal({ contest, isOpen, onClose }: ContestDetailMo
                   {format(contest.startTime, "HH:mm")} ({Math.floor(contest.duration / 60)}h {contest.duration % 60}m)
                 </span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{contest.participants?.toLocaleString() || "TBD"} participants</span>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {contest.difficulty && (
-                <div className="flex items-center space-x-2">
-                  <Trophy className="h-4 w-4 text-muted-foreground" />
-                  <Badge className={getDifficultyColor(contest.difficulty)}>{contest.difficulty}</Badge>
-                </div>
-              )}
             </div>
           </div>
 
           <Separator />
 
           {/* Description */}
-          <div>
-            <h3 className="font-semibold mb-2">Description</h3>
-            <p className="text-muted-foreground">
-              {contest.description || "No description available for this contest."}
-            </p>
-          </div>
 
-          {contest.prizes && (
-            <>
-              <Separator />
-              <div>
-                <h3 className="font-semibold mb-2">Prizes</h3>
-                <p className="text-muted-foreground">{contest.prizes}</p>
-              </div>
-            </>
-          )}
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3">

@@ -6,17 +6,12 @@ export interface UserReminder {
 }
 
 export interface UserSettings {
-  emailPreferences: {
-    oneHour: boolean
-    oneDay: boolean
-    
-  }
   platformPreferences: {
     leetcode: boolean
     codeforces: boolean
     codechef: boolean
   }
- ,
+  ,
   notifications: {
     email: boolean
     browser: boolean

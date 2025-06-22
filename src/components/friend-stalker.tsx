@@ -6,25 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
+import { Avatar } from "@/components/ui/avatar";
 import {
   Search,
-  TrendingUp,
-  TrendingDown,
-  Trophy,
   Users,
-  Target,
-  Calendar,
-  Clock,
 } from "lucide-react";
 import StyledButton from "@/components/ui/styled-botton";
 import { toast } from "sonner";
 import { useDebounceValue } from "usehooks-ts";
 export function FriendStalker() {
   const [username, setUsername] = useState("");
-  const [debouncedValue, setValue] = useDebounceValue(username, 500);
+  const [debouncedValue] = useDebounceValue(username, 500);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [showAllSubmissions, setShowAllSubmissions] = useState(false);
@@ -51,7 +43,7 @@ export function FriendStalker() {
       if (response.data.message.matchedUser === null) {
         toast.error(
           response.data.message.error ||
-            "User not found. Please check the username and try again."
+          "User not found. Please check the username and try again."
         );
         setUserData(null);
         return;
@@ -186,13 +178,12 @@ export function FriendStalker() {
                           className="flex flex-col items-center bg-background/80 rounded-lg p-3 shadow-sm w-full"
                         >
                           <span
-                            className={`text-lg font-bold text-accent-foreground ${
-                              s.difficulty === "Easy"
-                                ? "text-green-500"
-                                : s.difficulty === "Medium"
-                                  ? "text-yellow-500"
-                                  : "text-red-500"
-                            }`}
+                            className={`text-lg font-bold text-accent-foreground ${s.difficulty === "Easy"
+                              ? "text-green-500"
+                              : s.difficulty === "Medium"
+                                ? "text-yellow-500"
+                                : "text-red-500"
+                              }`}
                           >
                             {s.difficulty}
                           </span>
@@ -262,7 +253,7 @@ export function FriendStalker() {
                       </thead>
                       <tbody>
                         {!userData.recentSubmissionList ||
-                        userData.recentSubmissionList.length === 0 ? (
+                          userData.recentSubmissionList.length === 0 ? (
                           <tr className="table-row">
                             <td
                               colSpan={4}
@@ -273,7 +264,7 @@ export function FriendStalker() {
                           </tr>
                         ) : (
                           (userData.recentSubmissionList.length <= 6 ||
-                          showAllSubmissions
+                            showAllSubmissions
                             ? userData.recentSubmissionList
                             : userData.recentSubmissionList.slice(0, 6)
                           ).map((sub: any, i: number) => (
@@ -339,7 +330,7 @@ export function FriendStalker() {
                     {/* Mobile card view */}
                     <div className="md:hidden flex flex-col gap-4 mt-4">
                       {userData.recentSubmissionList &&
-                      userData.recentSubmissionList.length > 0 ? (
+                        userData.recentSubmissionList.length > 0 ? (
                         userData.recentSubmissionList.map(
                           (sub: any, i: number) => (
                             <div
