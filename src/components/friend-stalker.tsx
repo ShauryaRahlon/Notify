@@ -1,80 +1,18 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@/components/ui/avatar";
-import { Search, Users } from "lucide-react";
+import { Search, Users, Loader2 } from "lucide-react";
 import StyledButton from "@/components/ui/styled-botton";
 import { toast } from "sonner";
 import { useDebounceValue } from "usehooks-ts";
-
-// Mock response based on the new API
-// const MOCK_RESPONSE = {
-//   status: "success",
-//   message: "retrieved",
-//   username: "example_user",
-//   githubUrl: "https://github.com/example",
-//   twitterUrl: "https://twitter.com/example",
-//   linkedinUrl: "https://linkedin.com/in/example",
-//   contributions: {
-//     points: 100,
-//     questionCount: 5,
-//     testcaseCount: 10,
-//   },
-//   profile: {
-//     realName: "Example User",
-//     userAvatar: "https://assets.leetcode.com/avatar.jpg",
-//     birthday: "2000-01-01",
-//     ranking: 10000,
-//     reputation: 100,
-//     websites: ["https://example.com"],
-//     countryName: "United States",
-//     company: "Example Corp",
-//     school: "Example University",
-//     skillTags: ["Python", "Algorithms"],
-//     aboutMe: "LeetCode enthusiast",
-//     starRating: 4.5,
-//   },
-//   badges: [
-//     {
-//       name: "Badge 1",
-//       icon: "https://assets.leetcode.com/badge1.png",
-//     },
-//     {
-//       name: "Badge 2",
-//       icon: "https://assets.leetcode.com/badge2.png",
-//     },
-//   ],
-//   upcomingBadges: [],
-//   activeBadge: {},
-//   submitStats: {
-//     acSubmissionNum: [
-//       { difficulty: "Easy", count: 50, submissions: 60 },
-//       { difficulty: "Medium", count: 30, submissions: 40 },
-//       { difficulty: "Hard", count: 10, submissions: 15 },
-//     ],
-//   },
-//   submissionCalendar: { "1719000000": 2 },
-//   recentSubmissions: [
-//     {
-//       title: "Two Sum",
-//       titleSlug: "two-sum",
-//       statusDisplay: "Accepted",
-//       lang: "Python3",
-//       timestamp: "1719000000",
-//     },
-//     {
-//       title: "Add Two Numbers",
-//       titleSlug: "add-two-numbers",
-//       statusDisplay: "Wrong Answer",
-//       lang: "C++",
-//       timestamp: "1718990000",
-//     },
-//   ],
-// };
 
 export function FriendStalker() {
   const [username, setUsername] = useState("");
@@ -91,7 +29,6 @@ export function FriendStalker() {
     }
   }, [debouncedValue]);
 
-  // Handle search with debounced value
   const handleSearch = async () => {
     if (!debouncedValue.trim()) {
       toast.error("Please enter a LeetCode username to search");
@@ -104,12 +41,10 @@ export function FriendStalker() {
       );
       const data = await response.json();
       if (data.message === "user does not exist") {
-        // toast.error(`User ${debouncedValue} not found`);
         throw new Error(data.message || "Failed to fetch user data");
       }
       setUserData(data);
       toast.success(`Successfully retrieved ${debouncedValue}'s profile`);
-      // toast.success(`Successfully retrieved ${debouncedValue}'s profile`);
     } catch (error) {
       toast.error(
         `Failed to fetch data for ${debouncedValue}. Please check the username and try again.`
@@ -120,7 +55,6 @@ export function FriendStalker() {
     }
   };
 
-  // Helper for status color
   const statusColor = (status: string) => {
     switch (status) {
       case "Accepted":
@@ -138,11 +72,11 @@ export function FriendStalker() {
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-xl border-2 border-accent/30 bg-gradient-to-br from-background to-muted/50">
+      <Card className="shadow-xl border-2 border-accent/30 ">
         <CardHeader>
           <CardTitle className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 text-3xl font-bold tracking-tight">
             <span className="flex items-center space-x-2">
-              <Users className="h-6 w-6 " />
+             
               <span>Stalk Your Friend 👀</span>
             </span>
           </CardTitle>
@@ -157,15 +91,28 @@ export function FriendStalker() {
               className="flex-1 max-w-full shadow-sm w-full sm:w-auto"
             />
             <Button
+              variant="outline"
               onClick={handleSearch}
               disabled={loading}
-              className="w-full sm:w-auto text-lg"
+              className="w-full sm:w-auto "
             >
-              <Search className="h-4 w-4 " />
-              {loading ? "Searching..." : "Stalk"}
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin h-4 w-4 mr-2" /> Searching...
+                </>
+              ) : (
+                <>
+                  <Search className="h-4 w-4 mr-2" /> Stalk
+                </>
+              )}
             </Button>
           </div>
 
+          {loading && (
+            <div className="flex justify-center py-6">
+              <Loader2 className="animate-spin h-6 w-6 text-primary" />
+            </div>
+          )}
           {userData && (
             <div className="space-y-10">
               {/* Profile Card */}
@@ -484,17 +431,6 @@ export function FriendStalker() {
             </div>
           )}
 
-          {!userData && !loading && (
-            <div className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2">
-              <Users className="h-16 w-16 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-semibold">
-                Enter a LeetCode username to start stalking! 😈
-              </p>
-              <p className="text-sm mt-2">
-                View profile, questions, submissions, and badges
-              </p>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>

@@ -2,13 +2,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FriendStalker } from "@/components/friend-stalker";
-import { Calendar, Bell, TrendingUp} from "lucide-react";
+import { Bell, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 import QuickSection from "@/components/quick-section";
 import FeaturedContests from "@/components/featured-contests";
 
-import ScrollVelocity from "@/components/ui/ScrollVelocity";
+import ColourfulText from "@/components/ui/colourful-text";
 import {
   Dialog,
   DialogContent,
@@ -22,9 +22,9 @@ import {
 export default function Dashboard() {
   const [logoutOpen, setLogoutOpen] = React.useState(false);
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-20 space-y-10">
+    <div className="container mx-auto px-2 sm:px-4 py-20 space-y-10 ">
       {/* Theme Toggle & Logout */}
-      
+
       <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
@@ -37,26 +37,25 @@ export default function Dashboard() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            
           </DialogFooter>
         </DialogContent>
       </Dialog>
       {/* Hero Section */}
-      <section className="text-center space-y-6 py-12 ">
-        <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-300 dark:via-purple-300 dark:to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
-          Track, Compete, Win.
-        </h1>
-        <ScrollVelocity
-          texts={[
-            "Get notified for coding contests.",
-            "Never miss a chance to compete!",
-          ]}
-          numCopies={6}
-          velocity={70}
-          className=" text-2xl tracking-normal text-warning-foreground font-light max-w-2xl mx-auto"
-        />
+      <section className="text-center space-y-6 mt-10 ">
+        <div className="flex items-center justify-center relative overflow-hidden">
+          <h1 className="text-2xl md:text-5xl lg:text-5xl font-bold text-center dark:text-white relative z-2 font-sans">
+            Track <ColourfulText text="Contests" /> effortlessly <br />
+            Stay ahead, compete, and win!
+          </h1>
+        </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+        {/* <TextScroll
+          text="Get notified for coding contests. Never miss a chance to compete!"
+          default_velocity={5}
+          className="font-display text-center text-xl font-normal tracking-normal  text-black dark:text-white md:text-3xl md:leading-[2rem] "
+        /> */}
+
+        {/* <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <Button size="lg" className="shadow-md" asChild>
             <Link href="/contests">
               <Calendar className="mr-2 h-5 w-5" />
@@ -69,23 +68,23 @@ export default function Dashboard() {
               Set Reminders
             </Link>
           </Button>
-        </div>
+        </div> */}
       </section>
 
       {/* Quick Stats */}
       <QuickSection />
+      {/* Featured Contests */}
+      <section className="space-y-6">
+        <FeaturedContests />
+      </section>
 
       {/* Friend Stalker Section */}
       <section>
         <FriendStalker />
       </section>
 
-      {/* Featured Contests */}
-      <section className="space-y-6">
-        <FeaturedContests />
-      </section>
       {/* Quick Actions */}
-      <section className="bg-gradient-to-r from-accent/10 to-background rounded-xl p-8 shadow-md">
+      <section className="rounded-xl p-8 shadow-md">
         <div className="text-center space-y-4">
           <h3 className="text-2xl font-bold">Ready to compete?</h3>
           <p className="text-muted-foreground">
