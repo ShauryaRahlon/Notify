@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +8,15 @@ import { Search, Users, Loader2 } from "lucide-react";
 import StyledButton from "@/components/ui/styled-botton";
 import { toast } from "sonner";
 import { useDebounceValue } from "usehooks-ts";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import axios from "axios";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function FriendStalker() {
   const [username, setUsername] = useState("");
@@ -20,26 +24,53 @@ export function FriendStalker() {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [showAllSubmissions, setShowAllSubmissions] = useState(false);
+  const [platform, setPlatform] = useState("leetcode");
 
   useEffect(() => {
     if (debouncedValue.trim()) {
-      handleSearch();
+      handleSearch(platform);
     } else {
       setUserData(null);
     }
   }, [debouncedValue]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (platform: string) => {
     if (!debouncedValue.trim()) {
-      toast.error("Please enter a LeetCode username to search");
+      toast.error("Please enter a username to search");
       return;
     }
     setLoading(true);
+    console.log(
+      "Searching for user:",
+      debouncedValue,
+      "on platform:",
+      platform
+    );
     try {
-      const response = await fetch(
-        `https://leetcode-stats.tashif.codes/${debouncedValue}/profile`
-      );
-      const data = await response.json();
+      let response: any = null;
+      if (platform === "leetcode") {
+        response = await axios.get(
+          `https://leetcode-stats.tashif.codes/${debouncedValue}/profile`
+        );
+      } else if (platform === "codeforces") {
+        response = await axios.get(
+          `https://codeforces-stats.tashif.codes/${debouncedValue}`
+        );
+      } else if (platform === "codechef") {
+        response = await axios.get(
+          `https://codechef-stats.tashif.codes/${debouncedValue}/profile`
+        );
+      } else {
+        toast.error(
+          "Unsupported platform. Please use LeetCode, Codeforces, or CodeChef."
+        );
+        setLoading(false);
+        return;
+      }
+      if (!response) {
+        throw new Error("No response received from server");
+      }
+      const data = response.data;
       if (data.message === "user does not exist") {
         throw new Error(data.message || "Failed to fetch user data");
       }
@@ -76,7 +107,6 @@ export function FriendStalker() {
         <CardHeader>
           <CardTitle className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 text-3xl font-bold tracking-tight">
             <span className="flex items-center space-x-2">
-             
               <span>Stalk Your Friend 👀</span>
             </span>
           </CardTitle>
@@ -90,9 +120,23 @@ export function FriendStalker() {
               onChange={(e) => setUsername(e.target.value)}
               className="flex-1 max-w-full shadow-sm w-full sm:w-auto"
             />
+            <Select
+              value={platform}
+              onValueChange={(value) => setPlatform(value)}
+            >
+              <SelectTrigger className="w-auto">
+                <SelectValue placeholder="Platform" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="leetcode">Leetcode</SelectItem>
+                <SelectItem value="codechef">Codechef</SelectItem>
+                <SelectItem value="codeforces">Codeforces</SelectItem>
+              </SelectContent>
+            </Select>
+
             <Button
               variant="outline"
-              onClick={handleSearch}
+              onClick={() => handleSearch(platform)}
               disabled={loading}
               className="w-full sm:w-auto "
             >
@@ -430,7 +474,6 @@ export function FriendStalker() {
               </Card>
             </div>
           )}
-
         </CardContent>
       </Card>
     </div>
