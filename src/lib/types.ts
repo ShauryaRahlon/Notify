@@ -1,15 +1,3 @@
-export interface Contest {
-  id: string
-  title: string
-  platform: "leetcode" | "codeforces" | "gfg" | "atcoder" | "codechef"
-  startTime: Date
-  duration: number // in minutes
-  url: string
-  difficulty?: "easy" | "medium" | "hard"
-  description?: string
-  participants?: number
-  prizes?: string
-}
 
 export interface UserReminder {
   contestId: string

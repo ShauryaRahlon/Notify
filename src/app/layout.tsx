@@ -4,13 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
-import { FloatingNav } from "@/components/ui/floating-navbar";
-import {
-  IconHome,
-  IconSettings,
-  IconUser,
-  IconAward,
-} from "@tabler/icons-react";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -58,7 +52,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             {/* <Navbar /> removed: now only in (pages) layout */}
-            <FloatingNav navItems={navItems} />
+            
             {children}
             <Toaster richColors position="top-right" />
           </AuthProvider>
@@ -67,26 +61,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-const navItems = [
-  {
-    name: "Dashboard",
-    link: "/",
-    icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
-  },
-  {
-    name: "Contests",
-    link: "/contests",
-    icon: <IconAward className="h-4 w-4 text-neutral-500 dark:text-white" />,
-  },
-  {
-    name: "Settings",
-    link: "/settings",
-    icon: <IconSettings className="h-4 w-4 text-neutral-500 dark:text-white" />,
-  },
-  {
-    name: "About",
-    link: "/about",
-    icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
-  },
-];
