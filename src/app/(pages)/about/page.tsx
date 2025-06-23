@@ -1,6 +1,6 @@
 "use client";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
-import ShinyText from "@/src/components/ui/ShinyText/ShinyText";
+import ShinyText from "@/components/ui/ShinyText";
 const testimonials = [
   {
     quote:
