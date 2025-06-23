@@ -168,16 +168,17 @@ export function FriendStalker() {
   return (
     <div>
       <Card>
-        <Tabs defaultValue="Stalk Friends" className="w-full ">
+        <Tabs defaultValue="Stalk-Friends" className="w-full ">
           <TabsList className="w-full flex justify-between ">
-            <TabsTrigger value="Stalk Friends " className="text-base">
+            <TabsTrigger value="Stalk-Friends" className="text-base">
               Stalk Friends
             </TabsTrigger>
-            <TabsTrigger value="Saved Friends" className="text-base">
+            <TabsTrigger value="Saved-Friends" className="text-base">
               Saved Friends
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="Stalk Friends">
+          <TabsContent value="Stalk-Friends">
+            <div>
             <Card className="shadow-xl border-2 border-accent/30 ">
               <CardContent className="space-y-6 mt-6">
                 <div className="flex flex-col sm:flex-row gap-2 items- center w-full">
@@ -551,8 +552,9 @@ export function FriendStalker() {
                 )}
               </CardContent>
             </Card>
+            </div>
           </TabsContent>
-          <TabsContent value="Saved Friends">
+          <TabsContent value="Saved-Friends">
             <div>
               <FriendCard />
             </div>
