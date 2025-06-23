@@ -198,7 +198,7 @@ export function FriendStalker() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="leetcode">Leetcode</SelectItem>
-                      <SelectItem value="codechef">Codechef</SelectItem>
+                      
                       <SelectItem value="codeforces">Codeforces</SelectItem>
                     </SelectContent>
                   </Select>
