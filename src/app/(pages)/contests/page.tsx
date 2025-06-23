@@ -20,7 +20,6 @@ export default function ContestsPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("startTime");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedContest, setSelectedContest] = useState<Contest | null>(null);
@@ -53,7 +52,7 @@ export default function ContestsPage() {
         contest.platform?.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesPlatform =
         selectedPlatforms.length === 0 ||
-        selectedPlatforms.includes(contest.platform);
+        selectedPlatforms.includes(contest.platform?.toLowerCase());
       return matchesSearch && matchesPlatform;
     });
     filtered.sort((a, b) => {
@@ -76,7 +75,7 @@ export default function ContestsPage() {
   }, [contests, searchQuery, selectedPlatforms, sortBy]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 mt-20 py-8">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col space-y-4">
@@ -143,8 +142,6 @@ export default function ContestsPage() {
             <ContestFilters
               selectedPlatforms={selectedPlatforms}
               onPlatformsChange={setSelectedPlatforms}
-              selectedDifficulty={selectedDifficulty}
-              onDifficultyChange={setSelectedDifficulty}
             />
           </div>
           {/* Contest Grid/List */}
