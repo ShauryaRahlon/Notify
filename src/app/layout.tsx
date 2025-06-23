@@ -4,7 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
-
+import { ContestProvider } from "@/context/ContestProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -51,10 +51,12 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
-            {/* <Navbar /> removed: now only in (pages) layout */}
-            
-            {children}
-            <Toaster richColors position="top-right" />
+            <ContestProvider>
+              {/* <Navbar /> removed: now only in (pages) layout */}
+
+              {children}
+              <Toaster richColors position="top-right" />
+            </ContestProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

@@ -1,39 +1,25 @@
 "use client";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Calendar, Clock, Bell, Star } from "lucide-react";
-import axios from "axios";
 import React, { useState } from "react";
+
+import { ContestContext } from "@/context/ContestProvider";
+import { useContext } from "react";
 import { Contest } from "@/model/Contest";
 import { Reminder } from "@/model/Reminder";
-
 // Replace these with your actual data sources or props
-const fetchContests = async () => {
-  const response = await axios.get("/api/get-contests");
-  return response.data;
-};
 
-const fetchReminders = async () => {
-  const response = await axios.get("/api/get-reminders");
-  console.log(response.data);
-  return response.data;
-};
 
 export default function QuickSection() {
-  const [contestCard, setContest] = useState<Contest[]>([]);
-  const [reminders, setReminders] = useState<Reminder[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const {contest, reminder, contestLoading, reminderLoading, getContest, getReminder} = useContext(ContestContext);
+  
+  
   React.useEffect(() => {
-    const getContests = async () => {
-      const contests = await fetchContests();
-      setContest(contests.message || []);
-    };
-    const getReminders = async () => {
-      const reminders = await fetchReminders();
-      setReminders(reminders.message || []);
-    };
-    Promise.all([getContests(), getReminders()]).then(() => setLoading(false));
-  }, []);
+    getContest();
+    getReminder();
+  }
+  , []);
+ 
 
   // Skeleton for cards
   const CardSkeleton = ({ color }: { color: string }) => (
@@ -50,7 +36,7 @@ export default function QuickSection() {
     </Card>
   );
 
-  if (loading) {
+  if (contestLoading || reminderLoading) {
     return (
       <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
         <CardSkeleton color="blue" />
@@ -70,9 +56,9 @@ export default function QuickSection() {
         </CardHeader>
         <CardContent>
           <div className="text-4xl font-extrabold text-blue-600  flex justify-between dark:text-blue-300 items-center">
-            {contestCard.length > 0 &&
-              contestCard.filter(
-                (contest) => new Date(contest.startTime) > new Date()
+            {contest.length > 0 &&
+              contest.filter(
+                (c:Contest) => new Date(c.startTime) > new Date()
               ).length}{" "}
             <Calendar className="h-8 w-8  text-blue-500" />
           </div>
@@ -88,8 +74,8 @@ export default function QuickSection() {
         </CardHeader>
         <CardContent>
           <div className="text-4xl font-extrabold text-green-600 dark:text-green-300 flex justify-between items-center">
-            {contestCard.length > 0 &&
-              contestCard.filter((contest) => {
+            {contest.length > 0 &&
+              contest.filter((c:Contest) => {
                 const now = new Date();
                 const today = new Date(
                   now.getFullYear(),
@@ -98,8 +84,8 @@ export default function QuickSection() {
                 );
                 const tomorrow = new Date(today);
                 tomorrow.setDate(today.getDate() + 1);
-                const start = new Date(contest.startTime);
-                const end = new Date(contest.endTime);
+                const start = new Date(c.startTime);
+                const end = new Date(c.endTime);
                 return start >= today && end < tomorrow;
               }).length}
             <Clock className="h-8 w-8 text-green-500" />
@@ -115,7 +101,7 @@ export default function QuickSection() {
         </CardHeader>
         <CardContent>
           <div className="text-4xl font-extrabold text-purple-600 dark:text-purple-300 flex justify-between items-center">
-            {reminders.filter((reminder) => reminder.contest).length}
+            {reminder.filter((r:Reminder) => r.contest).length}
             <Bell className="h-8 w-8 text-purple-500" />
           </div>
           <p className="text-xs text-muted-foreground">Notifications set</p>

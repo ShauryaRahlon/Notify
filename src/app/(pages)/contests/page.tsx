@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useContext, useMemo, useState } from "react";
+import { ContestContext } from "@/context/ContestProvider";
 import { ContestCard } from "@/components/contest-card";
 import { ContestFilters } from "@/components/contest-filters";
 import { ContestDetailModal } from "@/components/contest-detail-modal";
@@ -16,8 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 export default function ContestsPage() {
-  const [contests, setContests] = useState<Contest[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { contest, contestLoading, reminder, reminderLoading } =
+    useContext(ContestContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("startTime");
@@ -25,28 +26,8 @@ export default function ContestsPage() {
   const [selectedContest, setSelectedContest] = useState<Contest | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    const fetchContests = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/api/get-contests");
-        const data = await response.json();
-        console.log("Fetched contests:", data);
-        // Normalize contests to match UI type
-
-        setContests(data.message);
-      } catch (e) {
-        console.error("Error fetching contests:", e);
-        setContests([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchContests();
-  }, []);
-
   const filteredAndSortedContests = useMemo(() => {
-    const filtered = contests.filter((contest) => {
+    const filtered = contest.filter((contest: Contest) => {
       const matchesSearch =
         contest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         contest.platform?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -55,7 +36,7 @@ export default function ContestsPage() {
         selectedPlatforms.includes(contest.platform?.toLowerCase());
       return matchesSearch && matchesPlatform;
     });
-    filtered.sort((a, b) => {
+    filtered.sort((a: Contest, b: Contest) => {
       switch (sortBy) {
         case "startTime":
           return (
@@ -72,7 +53,7 @@ export default function ContestsPage() {
       }
     });
     return filtered;
-  }, [contests, searchQuery, selectedPlatforms, sortBy]);
+  }, [contest, searchQuery, selectedPlatforms, sortBy]);
 
   // ContestCard skeleton for loading state
   const ContestCardSkeleton = () => (
@@ -156,7 +137,7 @@ export default function ContestsPage() {
           </div>
           {/* Contest Grid/List */}
           <div className="flex-1">
-            {loading ? (
+            {contestLoading || reminderLoading ? (
               <div
                 className={
                   viewMode === "grid"
@@ -187,10 +168,11 @@ export default function ContestsPage() {
                     : "space-y-4"
                 }
               >
-                {filteredAndSortedContests.map((contest) => (
+                {filteredAndSortedContests.map((contest: Contest) => (
                   <ContestCard
                     key={contest.code}
                     contest={contest}
+                    reminders={reminder}
                     onViewDetails={setSelectedContest}
                   />
                 ))}

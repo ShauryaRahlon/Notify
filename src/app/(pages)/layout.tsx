@@ -12,6 +12,8 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+
+
 const navItems = [
   {
     name: "Dashboard",
@@ -42,27 +44,29 @@ export default function PagesLayout({
 }) {
   return (
     <>
-      <FloatingNav
-        navItems={navItems}
-        rightItems={
-          <>
-            <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Log out"
-              onClick={() => signOut({ callbackUrl: "/sign-in" })}
-              className=" h-5 w-5"
-            >
-              <LogOut className="h-5 w-5" />
-            </Button>
-          </>
-        }
-      />
-      {children}
-      <div className="antialiased inset-0 fixed bottom-0 left-0 right-0 -z-50">
-        <BackgroundBeams />
-      </div>
+      
+        <FloatingNav
+          navItems={navItems}
+          rightItems={
+            <>
+              <ThemeToggle />
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Log out"
+                onClick={() => signOut({ callbackUrl: "/sign-in" })}
+                className=" h-5 w-5"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            </>
+          }
+        />
+        {children}
+        <div className="antialiased inset-0 fixed bottom-0 left-0 right-0 -z-50">
+          <BackgroundBeams />
+        </div>
+   
     </>
   );
 }

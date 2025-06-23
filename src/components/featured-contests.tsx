@@ -1,35 +1,12 @@
 "use client ";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ContestCard } from "@/components/contest-card";
-import { Contest } from "@/model/Contest";
-const loadData = async () => {
-  try {
-    const response = await fetch("/api/get-contests");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return data.message as Contest[];
-  } catch (error) {
-    console.error("Failed to fetch contests:", error);
-    return [];
-  }
-};
+import { ContestContext } from "@/context/ContestProvider";
 
 export default function FeaturedContests() {
-  const [featuredContests, setFeaturedContests] = useState<Contest[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const contests = await loadData();
-      setFeaturedContests(contests);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+  const { contest, contestLoading,reminder,reminderLoading } = useContext(ContestContext);
 
   // Skeleton for contest cards
   const ContestCardSkeleton = () => (
@@ -55,16 +32,16 @@ export default function FeaturedContests() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {loading ? (
+        {(contestLoading || reminderLoading) ? (
           Array.from({ length: 3 }).map((_, i) => (
             <ContestCardSkeleton key={i} />
           ))
-        ) : featuredContests.length > 0 ? (
-          [...featuredContests]
+        ) : contest.length > 0 ? (
+          [...contest]
             .reverse()
             .slice(0, 3)
             .map((contest) => (
-              <ContestCard key={contest.code} contest={contest} />
+              <ContestCard key={contest.code} contest={contest} reminders={reminder} />
             ))
         ) : (
           <p className="text-muted-foreground">

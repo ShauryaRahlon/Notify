@@ -1,5 +1,5 @@
 "use client";
-
+import { Reminder } from "@/model/Reminder";
 import type { Contest } from "@/model/Contest";
 import {
   Card,
@@ -17,6 +17,7 @@ import { toast } from "sonner";
 
 interface ContestCardProps {
   contest: Contest;
+  reminders: Reminder[];
   onSetReminder?: (contestId: string) => void;
   onViewDetails?: (contest: Contest) => void;
 }
@@ -37,8 +38,19 @@ async function addReminder(contest: Contest) {
   }
 }
 
-export function ContestCard({ contest, onSetReminder }: ContestCardProps) {
-  const [reminderSet, setReminderSet] = useState(false);
+export function ContestCard({
+  contest,
+  onSetReminder,
+  reminders,
+}: ContestCardProps) {
+  // Function to check if reminder is set for this contest
+  const isReminderSet = () => {
+    return reminders?.some(
+      (reminder) => reminder.contest?.code === contest.code
+    );
+  };
+
+  const [reminderSet, setReminderSet] = useState(isReminderSet());
 
   // Platform color mapping for dot and border
   const getPlatformColor = (platform: string) => {
@@ -69,19 +81,6 @@ export function ContestCard({ contest, onSetReminder }: ContestCardProps) {
         toast((result && result.message) || "Failed to set reminder.");
       }
     });
-    if (reminderSet) {
-      // If reminder is already set, remove it
-      setReminderSet(false);
-      onSetReminder?.(contest.code);
-      return;
-    }
-    setReminderSet(!reminderSet);
-    onSetReminder?.(contest.code);
-    toast(
-      reminderSet
-        ? "Reminder removed: You will no longer be notified about this contest"
-        : "Reminder set: You will be notified 1 hour before the contest starts"
-    );
   };
 
   const startTime =
@@ -91,11 +90,10 @@ export function ContestCard({ contest, onSetReminder }: ContestCardProps) {
   const isStartingSoon = startTime.getTime() - Date.now() < 60 * 60 * 1000; // 1 hour
 
   return (
-   <Card
-  className="group hover:shadow-lg transition-all duration-200 border-l-4 h-full flex flex-col"
-  style={{ borderLeftColor: getPlatformColor(contest.platform) }}
->
-
+    <Card
+      className="group hover:shadow-lg transition-all duration-200 border-l-4 h-full flex flex-col"
+      style={{ borderLeftColor: getPlatformColor(contest.platform) }}
+    >
       <a href={contest.url} target="_blank" rel="noopener noreferrer"></a>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
@@ -120,7 +118,7 @@ export function ContestCard({ contest, onSetReminder }: ContestCardProps) {
         </h3>
       </CardHeader>
       <a href={contest.url} target="_blank" rel="noopener noreferrer">
-       <CardContent className="space-y-3 flex-1">
+        <CardContent className="space-y-3 flex-1">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-1 text-muted-foreground">
               <Clock className="h-4 w-4" />
