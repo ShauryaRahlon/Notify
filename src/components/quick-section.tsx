@@ -14,14 +14,14 @@ const fetchContests = async () => {
 
 const fetchReminders = async () => {
   const response = await axios.get("/api/get-reminders");
-   console.log(response.data);
+  console.log(response.data);
   return response.data;
- 
-}
+};
 
 export default function QuickSection() {
   const [contestCard, setContest] = useState<Contest[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     const getContests = async () => {
@@ -31,13 +31,34 @@ export default function QuickSection() {
     const getReminders = async () => {
       const reminders = await fetchReminders();
       setReminders(reminders.message || []);
-    }
-  
-    getContests();
-    getReminders();
-  
-
+    };
+    Promise.all([getContests(), getReminders()]).then(() => setLoading(false));
   }, []);
+
+  // Skeleton for cards
+  const CardSkeleton = ({ color }: { color: string }) => (
+    <Card
+      className={`border-l-4 border-l-${color}-500 bg-background/80 shadow-sm animate-pulse`}
+    >
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div className="h-4 w-24 bg-muted rounded" />
+      </CardHeader>
+      <CardContent>
+        <div className={`h-10 w-2/3 bg-muted rounded mb-2`} />
+        <div className="h-3 w-1/2 bg-muted rounded" />
+      </CardContent>
+    </Card>
+  );
+
+  if (loading) {
+    return (
+      <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
+        <CardSkeleton color="blue" />
+        <CardSkeleton color="green" />
+        <CardSkeleton color="purple" />
+      </section>
+    );
+  }
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">

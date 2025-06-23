@@ -21,10 +21,44 @@ import {
 
 export default function Dashboard() {
   const [logoutOpen, setLogoutOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false); // Toggle for demo
+
+  // Skeleton Components
+  const SkeletonQuickSection = () => (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="h-20 rounded-lg bg-muted animate-pulse" />
+      ))}
+    </div>
+  );
+  const SkeletonFeaturedContests = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="h-40 rounded-xl bg-muted animate-pulse" />
+      ))}
+    </div>
+  );
+  const SkeletonFriendStalker = () => (
+    <div className="flex flex-col gap-4">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="h-16 rounded-lg bg-muted animate-pulse" />
+      ))}
+    </div>
+  );
+  const SkeletonQuickActions = () => (
+    <div className="rounded-xl p-8 shadow-md bg-card animate-pulse">
+      <div className="h-8 w-1/3 mx-auto bg-muted rounded mb-4" />
+      <div className="h-4 w-2/3 mx-auto bg-muted rounded mb-6" />
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="h-10 w-40 bg-muted rounded" />
+        <div className="h-10 w-40 bg-muted rounded" />
+      </div>
+    </div>
+  );
+
   return (
     <div className="container mx-auto px-2 sm:px-4 py-8 mt-16 md:mt-10 space-y-10 ">
       {/* Theme Toggle & Logout */}
-
       <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
@@ -48,63 +82,43 @@ export default function Dashboard() {
             Stay ahead, compete, and win!
           </h1>
         </div>
-
-        {/* <TextScroll
-          text="Get notified for coding contests. Never miss a chance to compete!"
-          default_velocity={5}
-          className="font-display text-center text-xl font-normal tracking-normal  text-black dark:text-white md:text-3xl md:leading-[2rem] "
-        /> */}
-
-        {/* <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Button size="lg" className="shadow-md" asChild>
-            <Link href="/contests">
-              <Calendar className="mr-2 h-5 w-5" />
-              Explore Contests
-            </Link>
-          </Button>
-          <Button variant="outline" size="lg" className="shadow-md" asChild>
-            <Link href="/settings">
-              <Bell className="mr-2 h-5 w-5" />
-              Set Reminders
-            </Link>
-          </Button>
-        </div> */}
       </section>
-
       {/* Quick Stats */}
-      <QuickSection />
+      {loading ? <SkeletonQuickSection /> : <QuickSection />}
       {/* Featured Contests */}
       <section className="space-y-6">
-        <FeaturedContests />
+        {loading ? <SkeletonFeaturedContests /> : <FeaturedContests />}
       </section>
-
       {/* Friend Stalker Section */}
       <section>
-        <FriendStalker />
+        {loading ? <SkeletonFriendStalker /> : <FriendStalker />}
       </section>
-
       {/* Quick Actions */}
       <section className="rounded-xl p-8 shadow-md">
-        <div className="text-center space-y-4">
-          <h3 className="text-2xl font-bold">Ready to compete?</h3>
-          <p className="text-muted-foreground">
-            Set up your preferences and never miss another contest
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="shadow">
-              <Link href="/settings">
-                <Bell className="mr-2 h-4 w-4" />
-                Configure Reminders
-              </Link>
-            </Button>
-            <Button variant="outline" asChild className="shadow">
-              <Link href="/contests">
-                <TrendingUp className="mr-2 h-4 w-4" />
-                Browse Contests
-              </Link>
-            </Button>
+        {loading ? (
+          <SkeletonQuickActions />
+        ) : (
+          <div className="text-center space-y-4">
+            <h3 className="text-2xl font-bold">Ready to compete?</h3>
+            <p className="text-muted-foreground">
+              Set up your preferences and never miss another contest
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild className="shadow">
+                <Link href="/settings">
+                  <Bell className="mr-2 h-4 w-4" />
+                  Configure Reminders
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="shadow">
+                <Link href="/contests">
+                  <TrendingUp className="mr-2 h-4 w-4" />
+                  Browse Contests
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </div>
   );

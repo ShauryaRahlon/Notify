@@ -74,6 +74,16 @@ export default function ContestsPage() {
     return filtered;
   }, [contests, searchQuery, selectedPlatforms, sortBy]);
 
+  // ContestCard skeleton for loading state
+  const ContestCardSkeleton = () => (
+    <div className="h-40 rounded-xl bg-muted animate-pulse flex flex-col p-4 gap-2">
+      <div className="h-6 w-1/2 bg-muted-foreground/30 rounded mb-2" />
+      <div className="h-4 w-1/3 bg-muted-foreground/20 rounded mb-4" />
+      <div className="flex-1" />
+      <div className="h-4 w-1/4 bg-muted-foreground/10 rounded" />
+    </div>
+  );
+
   return (
     <div className="container mx-auto px-4 mt-20 py-8">
       <div className="space-y-6">
@@ -147,8 +157,18 @@ export default function ContestsPage() {
           {/* Contest Grid/List */}
           <div className="flex-1">
             {loading ? (
-              <div className="text-center py-12 text-muted-foreground">
-                Loading contests...
+              <div
+                className={
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                    : "space-y-4"
+                }
+              >
+                {Array.from({ length: viewMode === "grid" ? 6 : 3 }).map(
+                  (_, i) => (
+                    <ContestCardSkeleton key={i} />
+                  )
+                )}
               </div>
             ) : filteredAndSortedContests.length === 0 ? (
               <div className="text-center py-12">
