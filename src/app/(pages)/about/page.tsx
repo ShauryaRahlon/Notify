@@ -1,6 +1,7 @@
 "use client";
+import BlurText from "@/components/ui/BlurText";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
-import ShinyText from "@/components/ui/ShinyText";
+
 const testimonials = [
   {
     quote:
@@ -14,7 +15,7 @@ const testimonials = [
       "From seamless integrations to a robust full-stack architecture, Notify reflects our passion for clean code and real-world impact. Proud to be part of this team!",
     name: "Vansh Arora",
     designation: "Full Stack Developer at Notify",
-    src: "vansh.jpg",
+    src: "/vansh.jpg",
   },
   {
     quote:
@@ -27,13 +28,9 @@ const testimonials = [
 export default function AboutPage() {
   return (
     <>
-      <div className="container mx-auto px-2 sm:px-4 py-28 space-y-10  flex flex-col items-center ">
-        <ShinyText
-          text="About Us"
-          disabled={false}
-          speed={5}
-          className="custom-class text-4xl  mb-6 text-center text-gray-900 dark:text-gray-300 "
-        />
+      <div className="h-full w-full  px-2 sm:px-4 mt-28 flex flex-col items-center justify-center ">
+        <BlurText text="About Us..." className="text-4xl sm:text-6xl font-bold " />
+       
 
         <AnimatedTestimonials testimonials={testimonials} />
       </div>

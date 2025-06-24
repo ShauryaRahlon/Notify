@@ -60,6 +60,9 @@ export function FriendStalker() {
         response = await axios.get(
           `https://codeforces-stats.tashif.codes/${debouncedValue}`
         );
+        toast.error(
+          "Codeforces support is currently experimental. Please report any issues."
+        );
       } else if (platform === "codechef") {
         response = await axios.get(
           `https://codechef-stats.tashif.codes/${debouncedValue}/profile`
@@ -293,7 +296,14 @@ export function FriendStalker() {
                     />
                     <Select
                       value={platform}
-                      onValueChange={(value) => setPlatform(value)}
+                      onValueChange={(value) => {
+                        setPlatform(value);
+                        value === "codeforces"
+                          ? toast.error(
+                              "Codeforces support is currently experimental."
+                            )
+                          : null;
+                      }}
                     >
                       <SelectTrigger className="w-auto">
                         <SelectValue placeholder="Platform" />

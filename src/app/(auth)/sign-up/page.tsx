@@ -23,6 +23,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AuthCard } from "@/components/ui/auth-card";
+
+// Glassmorphic style base
+const glassClass = `
+  bg-gradient-to-br from-white/30 to-white/10 dark:from-white/10 dark:to-white/5 
+  backdrop-blur-xl 
+  border border-white/30 dark:border-white/20 
+  shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] 
+  rounded-2xl
+`;
 
 const Page = () => {
   const [username, setUsername] = useState("");
@@ -84,113 +94,112 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-background p-10">
-      <div className="w-full max-w-md p-8 bg-card rounded-2xl shadow-2xl border border-primary/40 animate-fade-in">
-        <div className="text-center mb-6">
-          <h1 className="text-5xl font-extrabold tracking-tight mb-4 text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
-            Create Your Contest Tracker Account
-          </h1>
-          <p className="mb-4 text-lg text-muted-foreground font-semibold">
-            Sign up and unlock the world of coding contests. Track, Compete,
-            Win.{" "}
-            <span role="img" aria-label="Party Popper">
-              🎉
-            </span>
-          </p>
-        </div>
-        <div className="flex justify-end mb-4">
-          <ThemeToggle />
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your username"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        debounced(e.target.value);
-                      }}
-                    />
-                  </FormControl>
-                  {isCheckingUsername && (
-                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  )}
-                  <p
-                    className={`text-sm ${
-                      usernameMessage === "Username is available."
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {usernameMessage}
-                  </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter your password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={Submitting}
-              className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white font-bold shadow-lg hover:scale-105 transition-transform"
-            >
-              {Submitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                "Sign Up"
-              )}
-            </Button>
-          </form>
-        </Form>
-        <div className="mt-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link
-              href="/sign-in"
-              className="text-pink-500 font-semibold hover:underline"
-            >
-              Sign in
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
+    <AuthCard
+      title="Create Your Notify Account"
+      subtitle={
+        <>
+          Already have an account?{" "}
+          <Link
+            href="/sign-in"
+            className="underline underline-offset-4 text-blue-400"
+          >
+            Sign in
+          </Link>
+        </>
+      }
+    >
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-6"
+        >
+          {/* Username */}
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Enter your username"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      debounced(e.target.value);
+                    }}
+                    disabled={Submitting}
+                    autoComplete="username"
+                    required
+                  />
+                </FormControl>
+                {isCheckingUsername && (
+                  <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                )}
+                <p
+                  className={`text-sm ${
+                    usernameMessage === "Username is available."
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {usernameMessage}
+                </p>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Email */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Enter your email"
+                    disabled={Submitting}
+                    autoComplete="email"
+                    required
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Password */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="Enter your password"
+                    disabled={Submitting}
+                    autoComplete="new-password"
+                    required
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full" disabled={Submitting}>
+            {Submitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
+        </form>
+      </Form>
+    </AuthCard>
   );
 };
 

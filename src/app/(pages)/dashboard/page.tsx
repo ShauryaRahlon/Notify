@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FriendStalker } from "@/components/friend-stalker";
 import { Bell, TrendingUp } from "lucide-react";
 import Link from "next/link";
-
+import BlurText from "@/components/ui/BlurText";
 import QuickSection from "@/components/quick-section";
 import FeaturedContests from "@/components/featured-contests";
 
@@ -76,11 +76,14 @@ export default function Dashboard() {
       </Dialog>
       {/* Hero Section */}
       <section className="text-center space-y-6 mt-10 ">
-        <div className="flex items-center justify-center relative overflow-hidden">
-          <h1 className="text-2xl md:text-5xl lg:text-5xl font-bold text-center dark:text-white relative z-2 font-sans">
-            Track <ColourfulText text="Contests" /> effortlessly <br />
-            Stay ahead, compete, and win!
-          </h1>
+        <div className="flex items-center justify-center">
+          <BlurText
+            text="Effortlessly track coding contests. Stay updated, compete, and achieve your best!"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="mb-8 text-2xl md:text-5xl lg:text-5xl font-bold text-center dark:text-white relative z-2 font-sans"
+          />
         </div>
       </section>
       {/* Quick Stats */}
@@ -94,7 +97,7 @@ export default function Dashboard() {
         {loading ? <SkeletonFriendStalker /> : <FriendStalker />}
       </section>
       {/* Quick Actions */}
-      <section className="rounded-xl p-8 shadow-md">
+      <section >
         {loading ? (
           <SkeletonQuickActions />
         ) : (

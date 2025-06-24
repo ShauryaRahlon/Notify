@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AuthCard } from "@/components/ui/auth-card";
 
 const Page = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -90,70 +91,58 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-background dark:via-background dark:to-background p-4">
-      <div className="relative w-full max-w-md p-8 bg-card rounded-2xl shadow-2xl border border-primary/30 animate-fade-in">
-        <div className="absolute top-4 right-4">
-          <ThemeToggle />
-        </div>
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2 text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
-            Verify Your Account
-          </h1>
-          <p className="mb-2 text-lg text-muted-foreground font-semibold">
-            Please enter the verification code sent to your email.
-          </p>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="code"
-              render={() => (
-                <FormItem>
-                  <FormLabel className="block text-center text-base font-medium text-muted-foreground mb-2">
-                    Verification Code
-                  </FormLabel>
-                  <div className="flex gap-3 justify-center mb-2">
-                    {otp.map((digit, idx) => (
-                      <Input
-                        key={idx}
-                        ref={otpRefs[idx]}
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={1}
-                        className={`w-12 h-12 text-center text-xl font-bold border border-primary/60 rounded-lg focus:ring-2 focus:ring-primary transition-all bg-background shadow-sm
-                          ${digit ? "animate-otp-bounce" : ""} focus:animate-otp-focus`}
-                        style={{
-                          animationDuration: "0.25s",
-                          animationTimingFunction:
-                            "cubic-bezier(0.4, 0, 0.2, 1)",
-                        }}
-                        value={digit}
-                        onChange={(e) => handleOtpChange(idx, e.target.value)}
-                        onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                        autoComplete="one-time-code"
-                      />
-                    ))}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white font-bold shadow-lg hover:scale-105 transition-transform py-3 text-lg rounded-lg"
-            >
-              {submitting ? (
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              ) : (
-                "Verify"
-              )}
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </div>
+    <AuthCard
+      title="Verify Your Account"
+      subtitle={
+        <p className="mb-2 text-base text-muted-foreground font-semibold">
+          Please enter the verification code sent to your email.
+        </p>
+      }
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="code"
+            render={() => (
+              <FormItem>
+                <FormLabel className="block text-center text-base font-medium text-muted-foreground mb-2">
+                  Verification Code
+                </FormLabel>
+                <div className="flex gap-2 justify-center mb-2 flex-wrap max-w-full overflow-x-auto">
+                  {otp.map((digit, idx) => (
+                    <Input
+                      key={idx}
+                      ref={otpRefs[idx]}
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      className="w-10 h-12 md:w-12 text-center text-xl font-bold border border-primary/60 rounded-lg focus:ring-2 focus:ring-primary transition-all bg-background shadow-sm"
+                      style={{
+                        animationDuration: "0.25s",
+                        animationTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                      }}
+                      value={digit}
+                      onChange={(e) => handleOtpChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      autoComplete="one-time-code"
+                    />
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={submitting} className="w-full">
+            {submitting ? (
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            ) : (
+              "Verify"
+            )}
+          </Button>
+        </form>
+      </Form>
+    </AuthCard>
   );
 };
 

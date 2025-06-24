@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AuthCard } from "@/components/ui/auth-card";
 
 const forgotPassSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -57,67 +58,58 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-background p-10">
-      <div className="w-full max-w-md p-8 bg-card rounded-2xl shadow-2xl border border-primary/40 animate-fade-in">
-        <div className="text-center mb-6">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
-            Forgot your password?
-          </h1>
-          <p className="mb-4 text-lg text-muted-foreground font-semibold">
-            Enter your email and we will send you instructions to reset your
-            password.
-          </p>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex flex-col justify-center items-start text-sm font-medium text-muted-foreground mb-2 bg-center">
-                    Email
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Enter your email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white font-bold shadow-lg hover:scale-105 transition-transform"
-            >
-              {submitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                "Send Reset Link"
-              )}
-            </Button>
-          </form>
-        </Form>
-        <div className="mt-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Remembered your password?{" "}
-            <Link
-              href="/sign-in"
-              className="text-pink-500 font-semibold hover:underline"
-            >
-              Back to sign in
-            </Link>
-          </p>
-        </div>
+    <AuthCard
+      title="Forgot your password?"
+      subtitle={
+        <p className="mb-4 text-base text-muted-foreground font-semibold">
+          Enter your email and we will send you instructions to reset your
+          password.
+        </p>
+      }
+    >
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-6"
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={submitting} className="w-full">
+            {submitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Send Reset Link"
+            )}
+          </Button>
+        </form>
+      </Form>
+      <div className="mt-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Remembered your password?{" "}
+          <Link
+            href="/sign-in"
+            className="underline underline-offset-4 text-blue-400"
+          >
+            Back to sign in
+          </Link>
+        </p>
       </div>
-      <div className="absolute top-10 right-4">
-        <ThemeToggle />
-      </div>
-    </div>
+    </AuthCard>
   );
 };
 
