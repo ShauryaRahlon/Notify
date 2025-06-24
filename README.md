@@ -39,6 +39,15 @@ Missing contest notifications? Losing track of CodeChef, Codeforces, and LeetCod
 
 ---
 
+## 🙏 **Special Thanks**
+
+A huge shoutout to [Tashif Khan](https://github.com/Tashifkhan) for generously providing the APIs powering contest data fetching and enabling features like stalking your friends' LeetCode and Codeforces accounts.
+
+- [LeetCode Stats API](https://leetcode-stats.tashif.codes/)
+- [Codeforces Stats API](https://codeforces-stats.tashif.codes/)
+
+---
+
 ## 🛠️ **Modern Tech Stack**
 
 ### **Frontend Excellence**
