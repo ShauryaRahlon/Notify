@@ -44,27 +44,27 @@ export default function PagesLayout({
 }) {
   return (
     <>
-      
-        <FloatingNav
-          navItems={navItems}
-          rightItems={
-            <>
-              <ThemeToggle />
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Log out"
-                onClick={() => signOut({ callbackUrl: "/sign-in" })}
-                className=" h-5 w-5"
-              >
-                <LogOut className="h-5 w-5" />
-              </Button>
-            </>
-          }
-        />
-        {children}
-        
-   
+
+      <FloatingNav
+        navItems={navItems}
+        rightItems={
+          <>
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Log out"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className=" h-5 w-5"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </>
+        }
+      />
+      {children}
+
+
     </>
   );
 }
