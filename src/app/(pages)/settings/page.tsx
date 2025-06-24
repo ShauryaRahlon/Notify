@@ -9,9 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { UserSettings } from "@/lib/types";
 import { platformNames } from "@/lib/mock-data";
-import { toast } from 'sonner';
-import { Bell, Mail, Globe } from "lucide-react";
+import { toast } from "sonner";
+import { Bell, Globe } from "lucide-react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // async function fetchSettings() {
 //   const response = await axios.get("/api/settings");
@@ -19,6 +20,7 @@ import axios from "axios";
 // }
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [settings, setSettings] = useState<UserSettings>({
     platformPreferences: {
       leetcode: true,
@@ -58,7 +60,6 @@ export default function SettingsPage() {
     }
   };
 
-
   const updatePlatformPreferences = (
     key: keyof UserSettings["platformPreferences"],
     value: boolean
@@ -87,6 +88,32 @@ export default function SettingsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl mt-20">
+      {/* Back Button */}
+      <div className="absolute left-4 top-4">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => router.push("/dashboard")}
+          aria-label="Back to Dashboard"
+          className="hover:bg-secondary/50 transition-colors duration-200 cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+        </Button>
+      </div>
+
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Settings</h1>
@@ -117,7 +144,7 @@ export default function SettingsPage() {
                     id={key}
                     checked={
                       settings.platformPreferences[
-                      key as keyof typeof settings.platformPreferences
+                        key as keyof typeof settings.platformPreferences
                       ]
                     }
                     onCheckedChange={(value) =>
@@ -198,7 +225,11 @@ export default function SettingsPage() {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <Button onClick={handleSave} size="lg">
+          <Button
+            onClick={handleSave}
+            size="lg"
+            className="cursor-pointer hover:bg-primary/60 transform transition-colors duration-200 "
+          >
             Save Settings
           </Button>
         </div>

@@ -306,7 +306,7 @@ cp .env.sample .env
 ### **2️⃣ Build the Docker Image**
 
 ```bash
-docker build -t notify-app .
+docker build . -t notify-app .
 ```
 
 ### **3️⃣ Run the Docker Container**
@@ -320,7 +320,7 @@ docker run -p 3000:3000 --env-file .env notify-app
 
 ### **4️⃣ (Optional) Docker Compose**
 
-For more advanced setups (e.g., with MongoDB), you can use Docker Compose. Example `docker-compose.yml`:
+For a more complete development setup, create a `docker-compose.yml` file:
 
 ```yaml
 version: "3.8"
@@ -331,17 +331,13 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    depends_on:
-      - mongo
-  mongo:
-    image: mongo:6
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-volumes:
-  mongo-data:
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
 ```
 
----
+Then run with:
+
+```bash
+docker-compose up -d
+```

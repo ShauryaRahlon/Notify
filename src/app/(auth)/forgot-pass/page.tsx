@@ -46,7 +46,8 @@ const Page = () => {
       const result = await res.json();
       if (result.success) {
         toast.success(result.message || "Password reset email sent!");
-        router.replace("/reset-pass");
+        // Redirect to reset-pass with email as query param
+        router.replace(`/reset-pass?email=${encodeURIComponent(data.email)}`);
       } else {
         toast.error(result.message || "Failed to send reset email.");
       }
