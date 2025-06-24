@@ -296,14 +296,14 @@ export function FriendStalker() {
                     />
                     <Select
                       value={platform}
-                      onValueChange={(value) => {
-                        setPlatform(value);
-                        value === "codeforces"
-                          ? toast.error(
-                              "Codeforces support is currently experimental."
-                            )
-                          : null;
-                      }}
+                      onValueChange={(value) => 
+                        setPlatform(value)
+                        // value === "codeforces"
+                        //   ? toast.error(
+                        //       "Codeforces support is currently experimental."
+                        //     )
+                        //   : null;
+                      }
                     >
                       <SelectTrigger className="w-auto">
                         <SelectValue placeholder="Platform" />
