@@ -137,11 +137,10 @@ const Page = () => {
                   <Loader2 className="ml-2 h-4 w-4 animate-spin" />
                 )}
                 <p
-                  className={`text-sm ${
-                    usernameMessage === "Username is available."
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
+                  className={`text-sm ${usernameMessage === "Username is available."
+                    ? "text-green-500"
+                    : "text-red-500"
+                    }`}
                 >
                   {usernameMessage}
                 </p>
