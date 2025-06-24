@@ -6,7 +6,7 @@ import * as z from "zod";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Form,
   FormField,
@@ -30,10 +30,12 @@ const forgotPassSchema = z.object({
 const Page = () => {
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const emailFromQuery = searchParams.get("email") || "";
   const form = useForm<z.infer<typeof forgotPassSchema>>({
     resolver: zodResolver(forgotPassSchema),
     defaultValues: {
-      email: "",
+      email: emailFromQuery,
       resetCode: "",
       newPassword: "",
     },
@@ -100,7 +102,7 @@ const Page = () => {
       title="Almost There"
       subtitle={
         <p className="mb-4 text-base text-muted-foreground font-semibold">
-          Enter your email and the verification code sent on your email.
+          Enter the verification code sent to your email.
         </p>
       }
     >
@@ -109,22 +111,11 @@ const Page = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-6"
         >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          {/* Hide email field, but keep it in the form for submission */}
+          <input
+            type="hidden"
+            value={emailFromQuery}
+            {...form.register("email")}
           />
           {/* OTP 6-box input */}
           <FormField
