@@ -41,7 +41,7 @@ const Page = () => {
       toast.success("Successfully signed in!");
     }
     if (res?.url) {
-      window.location.href = res.url || "/dashboard";
+      window.location.href = "/dashboard";
     }
     setSubmitting(false);
   };
