@@ -54,7 +54,7 @@
     "leetcode-query": "^2.0.0",
     "lucide-react": "^0.514.0",
     "mongoose": "^8.15.2",
-    "motion": "^12.18.1",
+    "motion": "^12.19.1",
     "multer": "^2.0.1",
     "next": "^15.3.3",
     "next-auth": "^4.24.11",

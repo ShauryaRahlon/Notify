@@ -63,9 +63,7 @@ export default function PagesLayout({
           }
         />
         {children}
-        <div className="antialiased inset-0 fixed bottom-0 left-0 right-0 -z-50">
-          <BackgroundBeams />
-        </div>
+        
    
     </>
   );

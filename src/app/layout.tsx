@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ContestProvider } from "@/context/ContestProvider";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -55,7 +56,11 @@ export default function RootLayout({
               {/* <Navbar /> removed: now only in (pages) layout */}
 
               {children}
+              
               <Toaster richColors position="top-right" />
+              <div className="antialiased inset-0 fixed bottom-0 left-0 right-0 -z-50">
+                        <BackgroundBeams />
+                      </div>
             </ContestProvider>
           </AuthProvider>
         </ThemeProvider>
