@@ -283,3 +283,65 @@ _Built with 💻 by [Vansh](https://github.com/vansh1293), [Himanshu](https://gi
 **[🚀 Live Demo](https://notify-snowy.vercel.app/)** | **[📱 Install PWA](https://notify-snowy.vercel.app/sign-in)**
 
 _Available on all devices - just visit the link and click "Add to Home Screen"_
+
+---
+
+## 🐳 Docker Usage
+
+You can run Notify using Docker for easy deployment and consistent environments.
+
+### **Prerequisites**
+
+- [Docker](https://www.docker.com/get-started) installed on your system
+
+### **1️⃣ Prepare Environment Variables**
+
+Create a `.env` file in the project root (or use the provided `.env.sample` as a template) and fill in the required values:
+
+```bash
+cp .env.sample .env
+# Edit .env and set your MongoDB URI, email credentials, etc.
+```
+
+### **2️⃣ Build the Docker Image**
+
+```bash
+docker build -t notify-app .
+```
+
+### **3️⃣ Run the Docker Container**
+
+```bash
+docker run -p 3000:3000 --env-file .env notify-app
+```
+
+- The app will be available at [http://localhost:3000](http://localhost:3000)
+- You can override environment variables at runtime using `-e VAR_NAME=value` if needed.
+
+### **4️⃣ (Optional) Docker Compose**
+
+For more advanced setups (e.g., with MongoDB), you can use Docker Compose. Example `docker-compose.yml`:
+
+```yaml
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
+```
+
+---
