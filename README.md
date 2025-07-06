@@ -62,7 +62,7 @@ A huge shoutout to [Tashif Khan](https://github.com/Tashifkhan) for generously p
 
 ![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
 ![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
-![Cron Jobs](https://img.shields.io/badge/-Cron%20Jobs-4285F4?style=flat-square&logo=google-cloud&logoColor=white)
+![Cron Job](https://img.shields.io/badge/-Cron%20Jobs-4285F4?style=flat-square&logo=google-cloud&logoColor=white)
 
 ### **Platform Integrations**
 
@@ -76,7 +76,7 @@ A huge shoutout to [Tashif Khan](https://github.com/Tashifkhan) for generously p
 
 ### **🔔 Smart Contest Reminders**
 
-- Customizable notification timing (15 min, 1 hour, 1 day before)
+- Customizable notification timing (1 hour, 1 day before)
 - Multiple reminder types: browser notifications, email alerts
 - Contest difficulty and duration-based filtering
 - Time zone intelligent scheduling
@@ -90,7 +90,7 @@ A huge shoutout to [Tashif Khan](https://github.com/Tashifkhan) for generously p
 
 ### **⚡ PWA Superpowers**
 
-- Install directly from browser
+- Install directly from any browser
 - Works offline with cached data
 - Native app-like experience
 - Lightning-fast loading times
@@ -98,7 +98,7 @@ A huge shoutout to [Tashif Khan](https://github.com/Tashifkhan) for generously p
 
 ### **🤖 Backend Intelligence**
 
-- **Automated Contest Fetching** - Cron jobs keep data fresh
+- **Automated Contest Fetching** - Cron jobs keep the data fresh
 - **Server Keep-Alive System** - 99.9% uptime guarantee
 - **Smart Caching** - Optimized performance
 - **Scalable Database** - MongoDB for reliable data storage
@@ -295,9 +295,9 @@ _Available on all devices - just visit the link and click "Add to Home Screen"_
 
 ---
 
-## 🐳 Docker Usage
+## 🐳 Docker because why not
 
-You can run Notify using Docker for easy deployment and consistent environments.
+You can run Notify using Docker if you dont wanna go in burden of installing node.js.
 
 ### **Prerequisites**
 
