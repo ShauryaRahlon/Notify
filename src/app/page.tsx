@@ -59,16 +59,14 @@ export default function Page() {
               </Link>
             </BoxReveal>
             <BoxReveal boxColor={"#f88600"} duration={0.5}>
-              
-                <InstallPWAButton />
-            
+              <InstallPWAButton />
             </BoxReveal>
           </div>
         </div>
         <div className="max-w-2xl w-full md:w-fit">
           <Terminal>
             <TypingAnimation>
-              &gt; git clone https://github.com/vansh1233/Notify
+              &gt; git clone https://github.com/BoGeYmAn04/Contest-Tracker.git
             </TypingAnimation>
             <AnimatedSpan delay={1200} className="text-green-500">
               <span>✔ Repository cloned.</span>
